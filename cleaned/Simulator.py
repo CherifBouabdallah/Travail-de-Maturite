@@ -25,3 +25,8 @@ print("l'angle réfléchi est de : {Angle_of_Refraction_Degrees_Rounded}")
 
 
 
+#things to add : 
+# A window with the output angle
+# A slider to choose angle and RI
+# the laser
+# the transparent objects
