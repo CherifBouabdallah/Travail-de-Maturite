@@ -31,10 +31,10 @@ font = ("Arial", 36)
 text = "Hello, World!"
 
 # create a label with the text
-label = tk.Label(window, text=Angle_of_Refraction_Degrees_Rounded, font=font, fg="white", bg="black")
+Angle_On_Screen = tk.Label(window, text=Angle_of_Refraction_Degrees_Rounded, font=font, fg="white", bg="black")
 
 # center the label in the window
-label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+Angle_On_Screen.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 # run the window loop
 window.mainloop()
@@ -42,8 +42,12 @@ window.mainloop()
 
 
 
-# things to add : 
-# A window with the output angle
+# TO ADD : 
+
+# In case of a reflexion !
 # A slider to choose angle and RI
 # the laser
 # the transparent objects
+
+# DONE :
+# A window with the output angle 
