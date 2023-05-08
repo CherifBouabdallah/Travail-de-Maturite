@@ -1,4 +1,5 @@
 import math
+import tkinter as tk
 
 #Asking for things
 
@@ -20,12 +21,28 @@ Angle_of_Refraction_Radians = math.asin((Refracion_index_1 * math.sin(Angle_of_A
 Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
 Angle_of_Refraction_Degrees_Rounded = round(Angle_of_Refraction_Degrees)
 
-print("l'angle réfléchi est de : {Angle_of_Refraction_Degrees_Rounded}")
+#print("l'angle réfléchi est de : {Angle_of_Refraction_Degrees_Rounded}")
+
+window = tk.Tk()
+window.geometry("800x600")
+window.configure(bg="black")
+
+font = ("Arial", 36)
+text = "Hello, World!"
+
+# create a label with the text
+label = tk.Label(window, text=Angle_of_Refraction_Degrees_Rounded, font=font, fg="white", bg="black")
+
+# center the label in the window
+label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+# run the window loop
+window.mainloop()
 
 
 
 
-#things to add : 
+# things to add : 
 # A window with the output angle
 # A slider to choose angle and RI
 # the laser
