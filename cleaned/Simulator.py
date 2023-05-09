@@ -1,9 +1,9 @@
 import math
-import tkinter as tk
+import pygame
 
 #Asking for things
 
-Angle_of_Arrival_Degrees = input("Donne moi un angle d'arivée : ")
+Angle_of_Arrival_Degrees = input("Donne moi un angle d'arrivée : ")
 Angle_of_Arrival_Degrees = float(Angle_of_Arrival_Degrees)
 
 Angle_of_Arrival_Radians = math.radians(Angle_of_Arrival_Degrees)
@@ -27,30 +27,32 @@ else:
     Angle_of_Refraction_Degrees_Rounded = ('Reflexion')
     
 
-
-
-
-
-#print(((Refracion_index_1 * math.sin(Angle_of_Arrival_Radians)) / Refracion_index_2))
-
 #Create window !
+pygame.init()
 
-window = tk.Tk()
-window.geometry("800x600")
-window.configure(bg="black")
+caption = "Refraction Simulator"
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption(caption)
 
-font = ("Arial", 36)
-text = "Hello, World!"
+black = (0, 0, 0)
+white = (255, 255, 255)
 
-# create a label with the text
-Angle_On_Screen = tk.Label(window, text=Angle_of_Refraction_Degrees_Rounded, font=font, fg="white", bg="black")
+font = pygame.font.SysFont("Calibri", 72)
+text = font.render((str(Angle_of_Refraction_Degrees_Rounded)), True,  white)
 
-# center the label in the window
-Angle_On_Screen.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+# Main Loop
+done = False
+while not done:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+    screen.fill(black)
 
-# run the window loop
-window.mainloop()
+    screen.blit(text, (800 // 2 - text.get_width() // 2, 600 // 2 - text.get_height() // 2))
+    pygame.display.update()
+    pygame.time.Clock().tick(30)
 
+pygame.quit()
 
 
 
