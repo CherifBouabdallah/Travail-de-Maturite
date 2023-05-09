@@ -104,6 +104,6 @@ while not done:
       if event.type == pygame.QUIT:
          done = True
       font = pygame.font.SysFont("Arial", 36)
-   txtsurf = font.render(Angle_of_Refraction_Degrees_Rounded, True, White)
+   txtsurf = font.render(str(Angle_of_Refraction_Degrees_Rounded), True, White)
    screen.blit(txtsurf,(400 - txtsurf.get_width() // 2, 300 - txtsurf.get_height() // 2))
    pygame.display.update()
