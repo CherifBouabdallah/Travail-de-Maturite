@@ -56,7 +56,7 @@ window.mainloop()
 
 # TO ADD : 
 
-
+# go from tkiner to pygame
 # A slider to choose angle and RI
 # the laser
 # the transparent objects
