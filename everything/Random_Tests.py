@@ -227,7 +227,7 @@ while not done:
 # Clean up
 pygame.quit()
 
-'''
+
 
 import pygame
 
@@ -294,4 +294,150 @@ while not done:
     pygame.display.update()
 
 # Clean up
+pygame.quit()
+
+
+
+
+import pygame
+
+# Initialize Pygame
+pygame.init()
+
+# Define colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
+
+# Set up the screen
+screen_width = 640
+screen_height = 480
+screen = pygame.display.set_mode([screen_width, screen_height])
+pygame.display.set_caption("Slider Example")
+
+# Set up the font
+font = pygame.font.Font(None, 36)
+
+# Set up the slider
+slider_x = 100
+slider_y = 200
+slider_width = 200
+slider_height = 20
+slider_value = 0.5
+slider_grabbed = False
+
+# Main loop
+done = False
+while not done:
+
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_x, mouse_y = event.pos
+                if slider_x <= mouse_x <= slider_x + slider_width and slider_y <= mouse_y <= slider_y + slider_height:
+                    slider_grabbed = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                slider_grabbed = False
+        elif event.type == pygame.MOUSEMOTION:
+            if slider_grabbed:
+                mouse_x, mouse_y = event.pos
+                slider_value = (mouse_x - slider_x) / slider_width
+                slider_value = max(0, min(slider_value, 1))
+
+    # Update
+    result = slider_value ** 2
+
+    # Draw
+    screen.fill(WHITE)
+
+    # Draw the slider
+    pygame.draw.rect(screen, GRAY, [slider_x, slider_y, slider_width, slider_height])
+    pygame.draw.rect(screen, BLACK, [slider_x + slider_value * slider_width - 5, slider_y, 10, slider_height])
+    
+    # Draw the result
+    result_text = font.render("Result: {}".format(result), True, BLACK)
+    screen.blit(result_text, [screen_width // 2 - result_text.get_width() // 2, slider_y + slider_height + 20])
+
+    pygame.display.flip()
+
+# Quit
+pygame.quit()
+
+'''
+
+import pygame
+
+# Initialize Pygame
+pygame.init()
+
+# Define colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
+
+# Set up the screen
+screen_width = 640
+screen_height = 480
+screen = pygame.display.set_mode([screen_width, screen_height])
+pygame.display.set_caption("Slider Example")
+
+# Set up the font
+font = pygame.font.Font(None, 36)
+
+# Set up the slider
+slider_x = 100
+slider_y = 200
+slider_width = 200
+slider_height = 20
+slider_value = 0.5
+slider_grabbed = False
+
+# Main loop
+done = False
+while not done:
+
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_x, mouse_y = event.pos
+                if slider_x <= mouse_x <= slider_x + slider_width and slider_y <= mouse_y <= slider_y + slider_height:
+                    slider_grabbed = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                slider_grabbed = False
+        elif event.type == pygame.MOUSEMOTION:
+            if slider_grabbed:
+                mouse_x, mouse_y = event.pos
+                slider_value = (mouse_x - slider_x) / slider_width
+                slider_value = max(0, min(slider_value, 1))
+
+    # Update
+    variable = round(slider_value * 10, 2)
+    result = round(variable ** 2, 2)
+
+    # Draw
+    screen.fill(WHITE)
+
+    # Draw the slider
+    pygame.draw.rect(screen, GRAY, [slider_x, slider_y, slider_width, slider_height])
+    pygame.draw.rect(screen, BLACK, [slider_x + slider_value * slider_width - 5, slider_y, 10, slider_height])
+    
+    # Draw the variable
+    variable_text = font.render("Variable: {}".format(variable), True, BLACK)
+    screen.blit(variable_text, [slider_x - variable_text.get_width() - 10, slider_y + slider_height // 2 - variable_text.get_height() // 2])
+    
+    # Draw the result
+    result_text = font.render("Result: {}".format(result), True, BLACK)
+    screen.blit(result_text, [screen_width // 2 - result_text.get_width() // 2, slider_y + slider_height + 20])
+
+    pygame.display.flip()
+
+# Quit
 pygame.quit()
