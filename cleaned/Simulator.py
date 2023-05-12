@@ -27,7 +27,7 @@ if -1 <= First_Part_of_Calculation <= 1:
     Angle_of_Refraction_Degrees_Rounded = round(Angle_of_Refraction_Degrees, 2)
 else:
     Angle_of_Refraction_Degrees_Rounded = ('Reflexion')
-    
+
 
 #Create window !
 pygame.init()
@@ -94,7 +94,7 @@ while not done:
 
     screen.fill(black)
 
-    Refracion_index_2 = round(slider_RI2_value * 10, 2)
+    Refracion_index_2 = round(slider_RI2_value * 2, 2)
     #Refracion_index_1 = round(slider_RI1_value * 10, 2)
     result = round(Angle_of_Refraction_Degrees, 2)
 
