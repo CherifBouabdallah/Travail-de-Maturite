@@ -79,7 +79,7 @@ pygame.quit()
 
 # TO ADD : 
 
-# show RI and Angle on screen
+
 # A slider to choose angle and RI
 # the laser
 # the transparent objects
@@ -89,4 +89,5 @@ pygame.quit()
 # In case of a reflexion !
 # # add comas
 # go from tkiner to pygame
+# show RI and Angle on screen
 
