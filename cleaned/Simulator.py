@@ -47,15 +47,15 @@ Smallfont = pygame.font.SysFont("Calibri", 20)
 
 # Set up the slider
 
-slider_width = 200
-slider_height = 20
-slider_x = (screen_width // (8/7) - slider_width // (8/7))
-slider_y = ((screen_height // 5 - slider_height // 5))
-slider_value = 0.5
-slider_grabbed = False
+slider_RI2_width = 200
+slider_RI2_height = 20
+slider_RI2_x = (screen_width // (8/7) - slider_RI2_width // (8/7))
+slider_RI2_y = ((screen_height // 5 - slider_RI2_height // 5))
+slider_RI2_value = 0.5
+slider_RI2_grabbed = False
 
 
-Angle_of_Refraction_Display = Bigfont.render((str(Angle_of_Refraction_Degrees_Rounded)), True,  white)
+Angle_of_Refraction_Display = Bigfont.render((str(Angle_of_Refraction_Degrees)), True,  white)
 Angle_of_Arrival_Display = font.render((str(Angle_of_Arrival_Degrees)), True,  white)
 Refracion_index_1_Display = font.render((str(Refracion_index_1)), True,  white)
 Refracion_index_2_Display = font.render((str(Refracion_index_2)), True,  white)
@@ -75,27 +75,34 @@ while not done:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
-                if slider_x <= mouse_x <= slider_x + slider_width and slider_y <= mouse_y <= slider_y + slider_height:
-                    slider_grabbed = True
+                if slider_RI2_x <= mouse_x <= slider_RI2_x + slider_RI2_width and slider_RI2_y <= mouse_y <= slider_RI2_y + slider_RI2_height:
+                    slider_RI2_grabbed = True
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
-                slider_grabbed = False
+                slider_RI2_grabbed = False
         elif event.type == pygame.MOUSEMOTION:
-            if slider_grabbed:
+            if slider_RI2_grabbed:
                 mouse_x, mouse_y = event.pos
-                slider_value = (mouse_x - slider_x) / slider_width
-                slider_value = max(0.1, min(slider_value, 2))
+                slider_RI2_value = (mouse_x - slider_RI2_x) / slider_RI2_width
+                slider_RI2_value = max(0.01, min(slider_RI2_value, 1))
+    if -1 <= First_Part_of_Calculation <= 1:
+        Angle_of_Refraction_Radians = math.asin((Refracion_index_1 * math.sin(Angle_of_Arrival_Radians)) / Refracion_index_2)
+
+        Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
+    else:
+        Angle_of_Refraction_Degrees = ('Reflexion')
 
     screen.fill(black)
 
-    Refracion_index_2 = round(slider_value * 10, 2)
-    result = round(((Refracion_index_1 * math.sin(Angle_of_Arrival_Radians)) / Refracion_index_2), 2)
+    Refracion_index_2 = round(slider_RI2_value * 10, 2)
+    #Refracion_index_1 = round(slider_RI1_value * 10, 2)
+    result = round(Angle_of_Refraction_Degrees, 2)
 
     Refracion_index_2_text = Smallfont.render(str(Refracion_index_2), True, white)
     result_text = font.render(str(result), True, white)
 
-    pygame.draw.rect(screen, gray, [slider_x, slider_y, slider_width, slider_height])
-    pygame.draw.rect(screen, black, [slider_x + slider_value * slider_width - 5, slider_y, 10, slider_height])
+    pygame.draw.rect(screen, gray, [slider_RI2_x, slider_RI2_y, slider_RI2_width, slider_RI2_height])
+    pygame.draw.rect(screen, white, [slider_RI2_x + slider_RI2_value * slider_RI2_width - 5, slider_RI2_y, 10, slider_RI2_height])
 
 
     #Shows things on screen
@@ -110,7 +117,7 @@ while not done:
     screen.blit(Refracion_index_2_Display_Header, (screen_width // (8/7) - Refracion_index_2_Display_Header.get_width() // (8/7), screen_height // 10 - Refracion_index_2_Display_Header.get_height() // 109))
     
 
-    screen.blit(Refracion_index_2_text, [slider_x - Refracion_index_2_text.get_width() - 10, slider_y + slider_height // 2 - Refracion_index_2_text.get_height() // 2])
+    screen.blit(Refracion_index_2_text, [slider_RI2_x - Refracion_index_2_text.get_width() - 10, slider_RI2_y + slider_RI2_height // 2 - Refracion_index_2_text.get_height() // 2])
     screen.blit(result_text, (screen_width // 2 - Refracion_index_2_Display.get_width() // 2, screen_height // 2 - Refracion_index_2_Display.get_height() // 2))
    
    
