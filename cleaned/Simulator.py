@@ -145,4 +145,3 @@ pygame.quit()
 # # add comas
 # go from tkiner to pygame
 # show RI and Angle on screen
-#test
