@@ -28,7 +28,16 @@ if -1 <= First_Part_of_Calculation <= 1:
 else:
     Angle_of_Refraction_Degrees_Rounded = ('Reflexion')
     Angle_of_Refraction_Degrees = ('Reflexion')
+
+
 '''
+Angle_of_Refraction_Degrees = 1
+Angle_of_Arrival_Degrees = 1
+Refraction_index_1 = 1
+Refraction_index_2 = 1
+First_Part_of_Calculation = 0
+Angle_of_Refraction_Radians = 1
+Angle_of_Arrival_Radians = 1
 
 
 
@@ -122,24 +131,19 @@ while not done:
                 slider_AOA_value = (mouse_x - slider_AOA_x) / slider_AOA_width
                 slider_AOA_value = max(0, min(slider_AOA_value, 1))
 
-    if -1 <= First_Part_of_Calculation <= 1:
-        Angle_of_Refraction_Radians = math.asin((Refraction_index_1 * math.sin(Angle_of_Arrival_Radians)) / Refraction_index_2)
 
-        Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
-    else:
-        Angle_of_Refraction_Degrees = ('Reflexion')
 
     screen.fill(black)
 
     Refraction_index_2 = round(slider_RI2_value * 2, 2)
     Refraction_index_1 = round(slider_RI1_value * 2, 2)
-    Angle_of_Arrival_Radians = round(slider_AOA_value * 90, 2)
+    Angle_of_Arrival_Degrees = round(slider_AOA_value * 90, 2)
     
-    result = round(Angle_of_Refraction_Degrees, 2)
+    result = Angle_of_Refraction_Degrees
 
     Refraction_index_2_text = Smallfont.render(str(Refraction_index_2), True, white)
     Refraction_index_1_text = Smallfont.render(str(Refraction_index_1), True, white)
-    Angle_of_Arrival_Radians_text = Smallfont.render(str(Angle_of_Arrival_Radians), True, white)
+    Angle_of_Arrival_Degrees_text = Smallfont.render(str(Angle_of_Arrival_Degrees), True, white)
     result_text = font.render(str(result), True, white)
 
     pygame.draw.rect(screen, gray, [slider_RI2_x, slider_RI2_y, slider_RI2_width, slider_RI2_height])
@@ -150,7 +154,6 @@ while not done:
 
     pygame.draw.rect(screen, gray, [slider_AOA_x, slider_AOA_y, slider_AOA_width, slider_AOA_height])
     pygame.draw.rect(screen, white, [slider_AOA_x + slider_AOA_value * slider_AOA_width - 5, slider_AOA_y, 10, slider_AOA_height])
-
 
     #Shows things on screen
 
@@ -166,14 +169,55 @@ while not done:
     screen.blit(Refraction_index_1_text, [slider_RI1_x - Refraction_index_1_text.get_width() - 10, slider_RI1_y + slider_RI1_height // 2 - Refraction_index_1_text.get_height() // 2])
     screen.blit(result_text, (screen_width // 2 - Refraction_index_1_Display.get_width() // 2, screen_height // 2 - Refraction_index_1_Display.get_height() // 2))   
 
-    screen.blit(Angle_of_Arrival_Radians_text, [slider_AOA_x - Angle_of_Arrival_Radians_text.get_width() - 10, slider_AOA_y + slider_AOA_height // 2 - Angle_of_Arrival_Radians_text.get_height() // 2])
+    screen.blit(Angle_of_Arrival_Degrees_text, [slider_AOA_x - Angle_of_Arrival_Degrees_text.get_width() - 10, slider_AOA_y + slider_AOA_height // 2 - Angle_of_Arrival_Degrees_text.get_height() // 2])
     screen.blit(result_text, (screen_width // 2 - Angle_of_Arrival_Display.get_width() // 2, screen_height // 2 - Angle_of_Arrival_Display.get_height() // 2))   
    
    
    
+    First_Part_of_Calculation = ((Refraction_index_1 * math.sin(math.radians(Angle_of_Arrival_Degrees))) / Refraction_index_2)
+
+    if -1 <= First_Part_of_Calculation <= 1:
+        Angle_of_Refraction_Radians = math.asin(First_Part_of_Calculation)
+        Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
+    else:
+        Angle_of_Refraction_Degrees = 'Reflexion'
+
+
+
+
+
+
+
    
    
     pygame.display.update()
-    pygame.time.Clock().tick(30)
+    pygame.time.Clock().tick(60)
 
 pygame.quit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+# TO ADD : 
+
+# remove the prompt to ask for angles
+# fix crash !
+# the laser
+# the transparent objects
+
+# DONE :
+# A window with the output angle
+# In case of a reflexion !
+# # add comas
+# go from tkiner to pygame
+# show RI and Angle on screen
+# A slider to choose angle and RI
