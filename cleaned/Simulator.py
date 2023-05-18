@@ -150,6 +150,8 @@ while not done:
     if -1 <= First_Part_of_Calculation <= 1:
         Angle_of_Refraction_Radians = math.asin(First_Part_of_Calculation)
         Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
+        Angle_of_Refraction_Degrees = round(Angle_of_Refraction_Degrees, 2)
+        
     else:
         Angle_of_Refraction_Degrees = 'Reflexion'
    
