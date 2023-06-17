@@ -31,26 +31,19 @@ Smallfont = pygame.font.SysFont("Calibri", 20)
 
 # Set up the slider
 
-slider_RI2_width = 200
-slider_RI2_height = 20
-slider_RI2_x = (screen_width // (8/7) - slider_RI2_width // (8/7))
-slider_RI2_y = ((screen_height // 5 - slider_RI2_height // 5))
-slider_RI2_value = 0.5
-slider_RI2_grabbed = False
+slider_RI1_width = slider_RI2_width = slider_AOA_width = 200
+slider_RI1_height = slider_RI2_height = slider_AOA_height = 20
+slider_RI1_value = slider_RI2_value = slider_AOA_value = 0.5
+slider_RI1_grabbed = slider_RI2_grabbed = slider_AOA_grabbed = False
 
-slider_RI1_width = 200
-slider_RI1_height = 20
+
 slider_RI1_x = (screen_width // 8 - slider_RI2_width // 8)
 slider_RI1_y = ((screen_height // 5 - slider_RI2_height // 5))
-slider_RI1_value = 0.5
-slider_RI1_grabbed = False
-
-slider_AOA_width = 200
-slider_AOA_height = 20
+slider_RI2_x = (screen_width // (8/7) - slider_RI2_width // (8/7))
+slider_RI2_y = ((screen_height // 5 - slider_RI2_height // 5))
 slider_AOA_x = (screen_width // 2 - slider_AOA_width // 2)
 slider_AOA_y = ((screen_height // 5 - slider_AOA_height // 5))
-slider_AOA_value = 0.5
-slider_AOA_grabbed = False
+
 
 
 
@@ -109,13 +102,11 @@ while not done:
     Refraction_index_2 = round(slider_RI2_value * 2, 2)
     Refraction_index_1 = round(slider_RI1_value * 2, 2)
     Angle_of_Arrival_Degrees = round(slider_AOA_value * 90, 2)
-    
-    result = Angle_of_Refraction_Degrees
 
     Refraction_index_2_text = Smallfont.render(str(Refraction_index_2), True, white)
     Refraction_index_1_text = Smallfont.render(str(Refraction_index_1), True, white)
     Angle_of_Arrival_Degrees_text = Smallfont.render(str(Angle_of_Arrival_Degrees), True, white)
-    result_text = font.render(str(result), True, white)
+    Angle_of_Refraction_Degrees_text = font.render(str(Angle_of_Refraction_Degrees), True, white)
 
     #Shows things on screen
 
@@ -135,13 +126,13 @@ while not done:
     
 
     screen.blit(Refraction_index_2_text, [slider_RI2_x - Refraction_index_2_text.get_width() - 10, slider_RI2_y + slider_RI2_height // 2 - Refraction_index_2_text.get_height() // 2])
-    screen.blit(result_text, (screen_width // 2 - Refraction_index_2_Display.get_width() // 2, screen_height // 2 - Refraction_index_2_Display.get_height() // 2))
+    screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Refraction_index_2_Display.get_width() // 2, screen_height // 2 - Refraction_index_2_Display.get_height() // 2))
 
     screen.blit(Refraction_index_1_text, [slider_RI1_x - Refraction_index_1_text.get_width() - 10, slider_RI1_y + slider_RI1_height // 2 - Refraction_index_1_text.get_height() // 2])
-    screen.blit(result_text, (screen_width // 2 - Refraction_index_1_Display.get_width() // 2, screen_height // 2 - Refraction_index_1_Display.get_height() // 2))   
+    screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Refraction_index_1_Display.get_width() // 2, screen_height // 2 - Refraction_index_1_Display.get_height() // 2))   
 
     screen.blit(Angle_of_Arrival_Degrees_text, [slider_AOA_x - Angle_of_Arrival_Degrees_text.get_width() - 10, slider_AOA_y + slider_AOA_height // 2 - Angle_of_Arrival_Degrees_text.get_height() // 2])
-    screen.blit(result_text, (screen_width // 2 - Angle_of_Arrival_Display.get_width() // 2, screen_height // 2 - Angle_of_Arrival_Display.get_height() // 2))   
+    screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Angle_of_Arrival_Display.get_width() // 2, screen_height // 2 - Angle_of_Arrival_Display.get_height() // 2))   
    
 
 
@@ -160,9 +151,13 @@ while not done:
 
 pygame.quit()
 
+
+
+
+
 # TO ADD : 
 
-
+# optimization
 # the laser
 # the transparent objects
 
