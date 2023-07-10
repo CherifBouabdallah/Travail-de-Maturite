@@ -387,15 +387,6 @@ while not done:
 pygame.quit()
 
 
-
-
-
-
-
-
-
-
-
 # TO ADD : 
 
 # remove the prompt to ask !

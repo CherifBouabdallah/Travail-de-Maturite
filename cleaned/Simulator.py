@@ -1,7 +1,7 @@
 import math
 import pygame
 
-# a few definitions to make everything easier
+#A few definitions to make everything easier
 
 Angle_of_Refraction_Degrees = 1
 Angle_of_Arrival_Degrees = 1
@@ -11,16 +11,14 @@ First_Part_of_Calculation = 0
 Angle_of_Refraction_Radians = 1
 Angle_of_Arrival_Radians = 1
 
-
-
-#Create window !
+#Create window
 pygame.init()
-
 caption = "Refraction Simulator"
-screen = pygame.display.set_mode((1000, 700))
-pygame.display.set_caption(caption)
 screen_width, screen_height = 1000, 700
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption(caption)
 
+#Definition of colors and font sizes
 black = (0, 0, 0)
 white = (255, 255, 255)
 gray = (128, 128, 128)
