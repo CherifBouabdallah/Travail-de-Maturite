@@ -27,6 +27,14 @@ Bigfont = pygame.font.SysFont("Calibri", 72)
 font = pygame.font.SysFont("Calibri", 52)
 Smallfont = pygame.font.SysFont("Calibri", 20)
 
+
+class Slider:
+    def __init__(self, width, height, value, grabbed):
+        self.width = width
+        self.height = height
+        self.value = value
+        self.grabbed = grabbed
+
 # Set up the slider
 
 slider_RI1_width = slider_RI2_width = slider_AOA_width = 200
@@ -41,9 +49,6 @@ slider_RI2_x = (screen_width // (8/7) - slider_RI2_width // (8/7))
 slider_RI2_y = ((screen_height // 5 - slider_RI2_height // 5))
 slider_AOA_x = (screen_width // 2 - slider_AOA_width // 2)
 slider_AOA_y = ((screen_height // 5 - slider_AOA_height // 5))
-
-
-
 
 Angle_of_Refraction_Display = Bigfont.render((str(Angle_of_Refraction_Degrees)), True,  white)
 Angle_of_Arrival_Display = font.render((str(Angle_of_Arrival_Degrees)), True,  white)
@@ -156,10 +161,12 @@ pygame.quit()
 # TO ADD : 
 
 # optimization
+
 # the laser
 # the transparent objects
 
 # DONE :
+
 # A window with the output angle
 # In case of a reflexion !
 # # add comas
