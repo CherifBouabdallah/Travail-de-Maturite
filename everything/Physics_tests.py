@@ -409,4 +409,3 @@ pygame.quit()
 # go from tkiner to pygame
 # show RI and Angle on screen
 # A slider to choose angle and RI
-test
