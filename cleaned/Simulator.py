@@ -27,14 +27,6 @@ Bigfont = pygame.font.SysFont("Calibri", 72)
 font = pygame.font.SysFont("Calibri", 52)
 Smallfont = pygame.font.SysFont("Calibri", 20)
 
-
-class Slider:
-    def __init__(self, width, height, value, grabbed):
-        self.width = width
-        self.height = height
-        self.value = value
-        self.grabbed = grabbed
-
 # Set up the slider
 
 slider_RI1_width = slider_RI2_width = slider_AOA_width = 200
@@ -55,7 +47,7 @@ Angle_of_Arrival_Display = font.render((str(Angle_of_Arrival_Degrees)), True,  w
 Refraction_index_1_Display = font.render((str(Refraction_index_1)), True,  white)
 Refraction_index_2_Display = font.render((str(Refraction_index_2)), True,  white)
 
-Angle_of_Refraction_Display_Header = font.render((str("Angle réfracté")), True,  white)
+Angle_of_Refraction_Display_Header = font.render(("Angle réfracté"), True,  white)
 Angle_of_Arrival_Display_Header = Smallfont.render(("Angle d'arrivée"), True,  white)
 Refraction_index_1_Display_Header = Smallfont.render(("Indice de réfraction du milieu 1"), True,  white)
 Refraction_index_2_Display_Header = Smallfont.render(("Indice de réfraction du milieu 2"), True,  white)
