@@ -30,8 +30,30 @@ class Slider:
     def update_grabbed(self, mouse_x, mouse_y):
         if self.pos_x <= mouse_x <= self.pos_x + self.width and self.pos_y <= mouse_y <= self.pos_y + self.height:
             self.grabbed = True
+        
+    def update_released(self):
+        if event.button == 1:
+            self.grabbed = False
 
-slider_IR1 = Slider(0.5, (screen_width // 8 - slider_width // 8)), ((screen_height // 5 - slider_height // 5))
+    def update_motion(self, mouse_x, mouse_y):
+        if self.grabbed:
+            mouse_x, mouse_y = event.pos
+            self.value = (mouse_x - self.pos_x) / self.width
+            self.value = max(0.01, min(self.value, 1))
+
+    def round_result(self):
+        self.calculation_value = round(self.value * 2, 2)
+
+    def draw_slider(self):
+        pygame.draw.rect(screen, gray, [self.pos_x, self.pos_y, self.width, self.height])
+        pygame.draw.rect(screen, white, [self.pos_x + self.value * self.width - 5, self.pos_y, 10, self.height])
+
+    def print_header(self):
+        screen.blit(Angle_of_Refraction_Display_Header, (screen_width // 2 - Angle_of_Refraction_Display_Header.get_width() // 2, screen_height // 2.5 - Angle_of_Refraction_Display_Header.get_height() // 2.5))
+
+
+
+slider_IR1 = Slider(0.5, (screen_width // 8 - slider_width // 8), (screen_height // 5 - slider_height // 5))
 
 done = False
 while not done:
