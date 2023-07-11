@@ -44,7 +44,7 @@ slider_AOA_y = ((screen_height // 5 - slider_AOA_height // 5))
 
 Angle_of_Refraction_Display = Bigfont.render((str(Angle_of_Refraction_Degrees)), True,  white)
 Angle_of_Arrival_Display = font.render((str(Angle_of_Arrival_Degrees)), True,  white)
-Refraction_index_1_Display = font.render((str(Refraction_index_1)), True,  white)
+#Refraction_index_1_Display = font.render((str(Refraction_index_1)), True,  white)
 Refraction_index_2_Display = font.render((str(Refraction_index_2)), True,  white)
 
 Angle_of_Refraction_Display_Header = font.render(("Angle réfracté"), True,  white)
@@ -122,12 +122,8 @@ while not done:
 
     screen.blit(Refraction_index_2_text, [slider_RI2_x - Refraction_index_2_text.get_width() - 10, slider_RI2_y + slider_RI2_height // 2 - Refraction_index_2_text.get_height() // 2])
     screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Refraction_index_2_Display.get_width() // 2, screen_height // 2 - Refraction_index_2_Display.get_height() // 2))
-
     screen.blit(Refraction_index_1_text, [slider_RI1_x - Refraction_index_1_text.get_width() - 10, slider_RI1_y + slider_RI1_height // 2 - Refraction_index_1_text.get_height() // 2])
-    screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Refraction_index_1_Display.get_width() // 2, screen_height // 2 - Refraction_index_1_Display.get_height() // 2))   
-
     screen.blit(Angle_of_Arrival_Degrees_text, [slider_AOA_x - Angle_of_Arrival_Degrees_text.get_width() - 10, slider_AOA_y + slider_AOA_height // 2 - Angle_of_Arrival_Degrees_text.get_height() // 2])
-    screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Angle_of_Arrival_Display.get_width() // 2, screen_height // 2 - Angle_of_Arrival_Display.get_height() // 2))   
    
 
 
