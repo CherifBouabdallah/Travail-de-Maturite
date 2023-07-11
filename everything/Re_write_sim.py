@@ -11,7 +11,7 @@ pygame.display.set_caption(caption)
 black = (0, 0, 0)
 white = (255, 255, 255)
 gray = (128, 128, 128)
-
 Bigfont = pygame.font.SysFont("Calibri", 72)
 font = pygame.font.SysFont("Calibri", 52)
 Smallfont = pygame.font.SysFont("Calibri", 20)
+

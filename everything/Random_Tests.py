@@ -444,3 +444,90 @@ pygame.quit()
 
 '''
 
+import pygame
+
+# Slider class definition
+class Slider:
+    def __init__(self, value, pos_x, pos_y):
+        self.value = value
+        self.grabbed = False
+        self.width = 200
+        self.height = 20
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the window
+window_width = 400
+window_height = 200
+window = pygame.display.set_mode((window_width, window_height))
+pygame.display.set_caption("Slider Demo")
+
+# Create two instances of the Slider class
+slider1 = Slider(0.5, 200, 50)
+slider2 = Slider(0.5, 200, 100)
+
+# Run the main game loop
+running = True
+while running:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_x, mouse_y = event.pos
+                if slider_RI2_x <= mouse_x <= slider_RI2_x + slider_RI2_width and slider_RI2_y <= mouse_y <= slider_RI2_y + slider_RI2_height:
+                    slider_RI2_grabbed = True
+                if slider_RI1_x <= mouse_x <= slider_RI1_x + slider_RI1_width and slider_RI1_y <= mouse_y <= slider_RI1_y + slider_RI1_height:
+                    slider_RI1_grabbed = True
+                if slider_AOA_x <= mouse_x <= slider_AOA_x + slider_AOA_width and slider_AOA_y <= mouse_y <= slider_AOA_y + slider_AOA_height:
+                    slider_AOA_grabbed = True
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                slider_RI2_grabbed = False
+            if event.button == 1:
+                slider_RI1_grabbed = False
+            if event.button == 1:
+                slider_AOA_grabbed = False
+
+        elif event.type == pygame.MOUSEMOTION:
+            if slider_RI2_grabbed:
+                mouse_x, mouse_y = event.pos
+                slider_RI2_value = (mouse_x - slider_RI2_x) / slider_RI2_width
+                slider_RI2_value = max(0.01, min(slider_RI2_value, 1))
+            if slider_RI1_grabbed:
+                mouse_x, mouse_y = event.pos
+                slider_RI1_value = (mouse_x - slider_RI1_x) / slider_RI1_width
+                slider_RI1_value = max(0.01, min(slider_RI1_value, 1))
+            if slider_AOA_grabbed:
+                mouse_x, mouse_y = event.pos
+                slider_AOA_value = (mouse_x - slider_AOA_x) / slider_AOA_width
+                slider_AOA_value = max(0, min(slider_AOA_value, 1))
+
+
+
+    # Clear the window
+    window.fill((0, 0, 0))
+
+    # Draw the sliders
+    pygame.draw.rect(window, 'gray', (100, 50, slider1.width, slider1.height))
+    pygame.draw.rect(window, 'white', [slider1.pos_x + slider1.value * slider1.width - 5, slider1.pos_y, 10, slider1.height])
+
+    pygame.draw.rect(window, 'gray', (100, 100, slider2.width, slider2.height))
+    pygame.draw.rect(window, 'white', [slider2.pos_x + slider2.value * slider2.width - 5, slider2.pos_y, 10, slider2.height])
+
+
+
+
+
+    # Update the display
+    pygame.display.flip()
+
+# Quit the Pygame application
+pygame.quit()
