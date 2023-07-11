@@ -478,38 +478,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mouse_x, mouse_y = event.pos
-                if slider_RI2_x <= mouse_x <= slider_RI2_x + slider_RI2_width and slider_RI2_y <= mouse_y <= slider_RI2_y + slider_RI2_height:
-                    slider_RI2_grabbed = True
-                if slider_RI1_x <= mouse_x <= slider_RI1_x + slider_RI1_width and slider_RI1_y <= mouse_y <= slider_RI1_y + slider_RI1_height:
-                    slider_RI1_grabbed = True
-                if slider_AOA_x <= mouse_x <= slider_AOA_x + slider_AOA_width and slider_AOA_y <= mouse_y <= slider_AOA_y + slider_AOA_height:
-                    slider_AOA_grabbed = True
-
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:
-                slider_RI2_grabbed = False
-            if event.button == 1:
-                slider_RI1_grabbed = False
-            if event.button == 1:
-                slider_AOA_grabbed = False
-
-        elif event.type == pygame.MOUSEMOTION:
-            if slider_RI2_grabbed:
-                mouse_x, mouse_y = event.pos
-                slider_RI2_value = (mouse_x - slider_RI2_x) / slider_RI2_width
-                slider_RI2_value = max(0.01, min(slider_RI2_value, 1))
-            if slider_RI1_grabbed:
-                mouse_x, mouse_y = event.pos
-                slider_RI1_value = (mouse_x - slider_RI1_x) / slider_RI1_width
-                slider_RI1_value = max(0.01, min(slider_RI1_value, 1))
-            if slider_AOA_grabbed:
-                mouse_x, mouse_y = event.pos
-                slider_AOA_value = (mouse_x - slider_AOA_x) / slider_AOA_width
-                slider_AOA_value = max(0, min(slider_AOA_value, 1))
-
 
 
     # Clear the window
