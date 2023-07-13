@@ -40,11 +40,11 @@ class Slider:
         if event.button == 1:
             self.grabbed = False
 
-    def update_motion(self, start_value, mouse_x):
+    def update_motion(self, value, mouse_x):
         if self.grabbed:
-            mouse_x = event.pos
+            mouse_x, _ = event.pos
             self.value = (mouse_x - self.pos_x) / self.width
-            self.value = max(start_value, min(self.value, 1))
+            self.value = max(0, min(self.value, 1))
 
     def round_result(self):
         self.calculation_value = round(self.value * 2, 2)
@@ -61,9 +61,12 @@ class Slider:
 
 
 
-slider1 = Slider(0.5, screen_width // 2, screen_height // 2)
+slider1 = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 2 - slider_width // 2)
 
-slider1.render_header('A')
+
+
+mouse_x = 0
+mouse_y = 0
 
 done = False
 while not done:
@@ -80,7 +83,15 @@ while not done:
             slider1.update_released()
 
         elif event.type == pygame.MOUSEMOTION:
-            slider1.update_motion()
+            slider1.update_motion(slider1.value, mouse_x)
 
     screen.fill(black)
+    slider1.render_header(str(slider1.value))
+    slider1.draw_slider()
+    slider1.blit_header(2, 3)
 
+
+    pygame.display.update()
+    pygame.time.Clock().tick(60)
+
+pygame.quit()
