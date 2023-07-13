@@ -12,6 +12,8 @@ Angle_of_Refraction_Radians = 1
 Angle_of_Arrival_Radians = 1
 
 #Create window
+
+
 pygame.init()
 caption = "Refraction Simulator"
 screen_width, screen_height = 1000, 700
@@ -19,6 +21,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption(caption)
 
 #Definition of colors and font sizes
+
+
 black = (0, 0, 0)
 white = (255, 255, 255)
 gray = (128, 128, 128)
@@ -42,15 +46,11 @@ slider_RI2_y = ((screen_height // 5 - slider_RI2_height // 5))
 slider_AOA_x = (screen_width // 2 - slider_AOA_width // 2)
 slider_AOA_y = ((screen_height // 5 - slider_AOA_height // 5))
 
-Angle_of_Refraction_Display = Bigfont.render((str(Angle_of_Refraction_Degrees)), True,  white)
-Angle_of_Arrival_Display = font.render((str(Angle_of_Arrival_Degrees)), True,  white)
-#Refraction_index_1_Display = font.render((str(Refraction_index_1)), True,  white)
-Refraction_index_2_Display = font.render((str(Refraction_index_2)), True,  white)
-
 Angle_of_Refraction_Display_Header = font.render(("Angle réfracté"), True,  white)
 Angle_of_Arrival_Display_Header = Smallfont.render(("Angle d'arrivée"), True,  white)
 Refraction_index_1_Display_Header = Smallfont.render(("Indice de réfraction du milieu 1"), True,  white)
 Refraction_index_2_Display_Header = Smallfont.render(("Indice de réfraction du milieu 2"), True,  white)
+
 
 # Main Loop
 
@@ -117,11 +117,11 @@ while not done:
     screen.blit(Angle_of_Refraction_Display_Header, (screen_width // 2 - Angle_of_Refraction_Display_Header.get_width() // 2, screen_height // 2.5 - Angle_of_Refraction_Display_Header.get_height() // 2.5))
     screen.blit(Angle_of_Arrival_Display_Header, (screen_width // 2 - Angle_of_Arrival_Display_Header.get_width() // 2, screen_height // 10 - Angle_of_Arrival_Display_Header.get_height() // 10))
     screen.blit(Refraction_index_1_Display_Header, (screen_width // 8 - Refraction_index_1_Display_Header.get_width() // 8, screen_height // 10 - Refraction_index_1_Display_Header.get_height() // 10))
-    screen.blit(Refraction_index_2_Display_Header, (screen_width // (8/7) - Refraction_index_2_Display_Header.get_width() // (8/7), screen_height // 10 - Refraction_index_2_Display_Header.get_height() // 109))
+    screen.blit(Refraction_index_2_Display_Header, (screen_width // (8/7) - Refraction_index_2_Display_Header.get_width() // (8/7), screen_height // 10 - Refraction_index_2_Display_Header.get_height() // 10))
     
 
     screen.blit(Refraction_index_2_text, [slider_RI2_x - Refraction_index_2_text.get_width() - 10, slider_RI2_y + slider_RI2_height // 2 - Refraction_index_2_text.get_height() // 2])
-    screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Refraction_index_2_Display.get_width() // 2, screen_height // 2 - Refraction_index_2_Display.get_height() // 2))
+    screen.blit(Angle_of_Refraction_Degrees_text, (screen_width // 2 - Refraction_index_2_text.get_width() // 2, screen_height // 2 - Refraction_index_2_text.get_height() // 2))
     screen.blit(Refraction_index_1_text, [slider_RI1_x - Refraction_index_1_text.get_width() - 10, slider_RI1_y + slider_RI1_height // 2 - Refraction_index_1_text.get_height() // 2])
     screen.blit(Angle_of_Arrival_Degrees_text, [slider_AOA_x - Angle_of_Arrival_Degrees_text.get_width() - 10, slider_AOA_y + slider_AOA_height // 2 - Angle_of_Arrival_Degrees_text.get_height() // 2])
    

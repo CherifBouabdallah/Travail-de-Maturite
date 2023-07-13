@@ -442,7 +442,6 @@ while not done:
 # Quit
 pygame.quit()
 
-'''
 
 import pygame
 
@@ -498,4 +497,38 @@ while running:
     pygame.display.flip()
 
 # Quit the Pygame application
+pygame.quit()
+
+
+'''
+
+
+import pygame
+
+# Initialize Pygame
+pygame.init()
+
+# Create the screen
+screen = pygame.display.set_mode((800, 600))
+
+# Create a font object
+font = pygame.font.Font(None, 36)
+
+# Render the text
+text = font.render("Hello, Pygame!", True, (255, 255, 255))
+
+# Blit the text onto the screen
+screen.blit(text, (100, 100))
+
+# Update the display
+pygame.display.flip()
+
+# Main game loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+# Quit Pygame
 pygame.quit()

@@ -26,20 +26,25 @@ class Slider:
         self.height = slider_height
         self.pos_x = pos_x
         self.pos_y = pos_y
+        self.header = 0
+        self.align_x = 0
+        self.align_y = 0
+        self.start_value = 0
 
     def update_grabbed(self, mouse_x, mouse_y):
+        mouse_x, mouse_y = event.pos
         if self.pos_x <= mouse_x <= self.pos_x + self.width and self.pos_y <= mouse_y <= self.pos_y + self.height:
             self.grabbed = True
-        
+
     def update_released(self):
         if event.button == 1:
             self.grabbed = False
 
-    def update_motion(self, mouse_x, mouse_y):
+    def update_motion(self, start_value, mouse_x):
         if self.grabbed:
-            mouse_x, mouse_y = event.pos
+            mouse_x = event.pos
             self.value = (mouse_x - self.pos_x) / self.width
-            self.value = max(0.01, min(self.value, 1))
+            self.value = max(start_value, min(self.value, 1))
 
     def round_result(self):
         self.calculation_value = round(self.value * 2, 2)
@@ -48,12 +53,17 @@ class Slider:
         pygame.draw.rect(screen, gray, [self.pos_x, self.pos_y, self.width, self.height])
         pygame.draw.rect(screen, white, [self.pos_x + self.value * self.width - 5, self.pos_y, 10, self.height])
 
-    def print_header(self):
-        #screen.blit(Angle_of_Refraction_Display_Header, (screen_width // 2 - Angle_of_Refraction_Display_Header.get_width() // 2, screen_height // 2.5 - Angle_of_Refraction_Display_Header.get_height() // 2.5))
+    def render_header(self, header):
+        self.header = font.render(header, True, (255, 255, 255))
+
+    def blit_header(self, align_x, align_y):
+        screen.blit(self.header, (screen_width // align_x - self.header.get_width() // align_x, screen_height // align_y - self.header.get_height() // align_y))
 
 
 
-slider_IR1 = Slider(0.5, (screen_width // 8 - slider_width // 8), (screen_height // 5 - slider_height // 5))
+slider1 = Slider(0.5, screen_width // 2, screen_height // 2)
+
+slider1.render_header('A')
 
 done = False
 while not done:
@@ -64,4 +74,13 @@ while not done:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
-                slider_IR1.update_grabbed(mouse_x, mouse_y)
+                slider1.update_grabbed(mouse_x, mouse_y)
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            slider1.update_released()
+
+        elif event.type == pygame.MOUSEMOTION:
+            slider1.update_motion()
+
+    screen.fill(black)
+
