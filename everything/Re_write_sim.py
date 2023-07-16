@@ -40,14 +40,14 @@ class Slider:
         if event.button == 1:
             self.grabbed = False
 
-    def update_motion(self, value, mouse_x):
+    def update_motion(self, mouse_x):
         if self.grabbed:
             mouse_x, _ = event.pos
             self.value = (mouse_x - self.pos_x) / self.width
             self.value = max(0, min(self.value, 1))
 
-    def round_result(self):
-        self.calculation_value = round(self.value * 2, 2)
+    def round_result(self, multiplyer):
+        self.calculation_value = round(self.value * multiplyer, 2)
 
     def draw_slider(self):
         pygame.draw.rect(screen, gray, [self.pos_x, self.pos_y, self.width, self.height])
@@ -59,9 +59,13 @@ class Slider:
     def blit_header(self, align_x, align_y):
         screen.blit(self.header, (screen_width // align_x - self.header.get_width() // align_x, screen_height // align_y - self.header.get_height() // align_y))
 
+'''
+class Calculation:
+    def __init__(self, ):
+'''
 
 
-slider1 = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 2 - slider_width // 2)
+slider1 = Slider(0.5, screen_width // 5 - slider_width // 5, screen_height // 2 - slider_width // 2)
 
 
 
@@ -83,12 +87,12 @@ while not done:
             slider1.update_released()
 
         elif event.type == pygame.MOUSEMOTION:
-            slider1.update_motion(slider1.value, mouse_x)
+            slider1.update_motion(mouse_x)
 
     screen.fill(black)
     slider1.render_header(str(slider1.value))
     slider1.draw_slider()
-    slider1.blit_header(2, 3)
+    slider1.blit_header(5, 2)
 
 
     pygame.display.update()
