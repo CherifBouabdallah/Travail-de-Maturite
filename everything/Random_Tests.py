@@ -604,6 +604,9 @@ slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height //
 slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10)
 slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10)
 
+slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9))
+slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95))
+
 
 def Calculation():
     pre_calculation = ((slider_RI1.real_value * math.sin(math.radians(slider_angle.real_value))) / slider_RI2.real_value)
@@ -632,16 +635,22 @@ while not done:
                 slider_RI1.update_grabbed(mouse_x, mouse_y)
                 slider_RI2.update_grabbed(mouse_x, mouse_y)
                 slider_angle.update_grabbed(mouse_x, mouse_y)
+                slider_square_x.update_grabbed(mouse_x, mouse_y)
+                slider_square_y.update_grabbed(mouse_x, mouse_y)
 
         elif event.type == pygame.MOUSEBUTTONUP:
             slider_RI1.update_released()
             slider_RI2.update_released()
             slider_angle.update_released()
+            slider_square_x.update_released()
+            slider_square_y.update_released()
 
         elif event.type == pygame.MOUSEMOTION:
             slider_RI1.update_motion(mouse_x)
             slider_RI2.update_motion(mouse_x)
             slider_angle.update_motion(mouse_x)
+            slider_square_x.update_motion(mouse_x)
+            slider_square_y.update_motion(mouse_x)
 
     screen.fill(black)
 
@@ -655,15 +664,26 @@ while not done:
     slider_RI2.draw_slider()
     slider_RI2.blit_header(1.3, 15)
     
-    slider_angle.calculation_value(2000)
+    slider_angle.calculation_value(180)
     slider_angle.render_header(str(slider_angle.real_value))
     slider_angle.draw_slider()
     slider_angle.blit_header(2, 15)
-    
-    Calculation()
 
-    pygame.draw.rect(screen, white, [slider_angle.real_value / 2 - 50, screen_height / 2 - 50, 100, 100])
-    pygame.draw.rect(screen, black, [slider_angle.real_value / 2 - 45, screen_height / 2 - 45, 90, 90])
+    slider_square_x.calculation_value(2000)
+    slider_square_x.render_header(str(slider_square_x.real_value))
+    slider_square_x.draw_slider()
+    slider_square_x.blit_header(3, 1.11)
+
+    slider_square_y.calculation_value(2000)
+    slider_square_y.render_header(str(slider_square_y.real_value))
+    slider_square_y.draw_slider()
+    slider_square_y.blit_header(3, 1.05)
+
+    
+    #Calculation()
+
+    pygame.draw.rect(screen, white, [slider_square_x.real_value / 2 - 50, slider_square_y.real_value / 2 - 50, 100, 100])
+    pygame.draw.rect(screen, black, [slider_square_x.real_value / 2 - 45, slider_square_y.real_value / 2 - 45, 90, 90])
 
     #pygame.draw.line(screen, 'red', (50, (screen_height / 2) ), (screen_width , (screen_height / 2)), 5)
 
@@ -671,27 +691,30 @@ while not done:
     y = screen_height / 2
     refracted_down = False
     refracted_up = False
+    square_touched = False
 
     while(x < screen_width):
-        if (x >= slider_angle.real_value / 2 - 50):
-            y = y + slider_RI1.real_value
 
-        if not refracted_down and y >= screen_height / 2 + 50 and slider_angle.real_value / 2 - 50 <= x <= slider_angle.real_value / 2 + 50:
+        if not square_touched and x >= slider_square_x.real_value / 2 - 50 and slider_square_y.real_value / 2 - 50 <= y <= slider_square_y.real_value / 2 + 50:
+            y = y + slider_RI1.real_value
+            square_touched = True
+
+        if not refracted_down and y >= slider_square_y.real_value / 2 + 50 and slider_square_x.real_value / 2 - 50 <= x <= slider_square_x.real_value / 2 + 50:
             y = y + slider_RI2.real_value
             refracted_down = True
 
         if refracted_down:
             y = y + slider_RI2.real_value
 
-        if not refracted_up and y <= screen_height / 2 - 50 and slider_angle.real_value / 2 - 50 <= x <= slider_angle.real_value / 2 + 50:
+        if not refracted_up and y <= slider_square_y.real_value / 2 - 50 and slider_square_x.real_value / 2 - 50 <= x <= slider_square_x.real_value / 2 + 50:
             y = y - slider_RI2.real_value
             refracted_up = True  
 
         if refracted_up:
             y = y + slider_RI2.real_value
 
-        if (x >= screen_width / 2 + 50 and not refracted_down and not refracted_up):
-            y = y + slider_RI1.real_value    
+        if (x >= slider_square_x.real_value / 2 + 50 and not refracted_down and not refracted_up):
+            y = y + slider_RI2.real_value    
     
 
 
