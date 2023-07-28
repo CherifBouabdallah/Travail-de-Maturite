@@ -669,17 +669,30 @@ while not done:
 
     x = 25
     y = screen_height / 2
+    refracted_down = False
+    refracted_up = False
+
     while(x < screen_width):
         if (x >= slider_angle.real_value / 2 - 50):
             y = y + slider_RI1.real_value
 
-        if (y >= screen_height / 2 + 50):
+        if not refracted_down and y >= screen_height / 2 + 50 and slider_angle.real_value / 2 - 50 <= x <= slider_angle.real_value / 2 + 50:
+            y = y + slider_RI2.real_value
+            refracted_down = True
+
+        if refracted_down:
             y = y + slider_RI2.real_value
 
-        if (x >= screen_width / 2 + 50):
-            y = y + slider_RI1.real_value
+        if not refracted_up and y <= screen_height / 2 - 50 and slider_angle.real_value / 2 - 50 <= x <= slider_angle.real_value / 2 + 50:
+            y = y - slider_RI2.real_value
+            refracted_up = True  
 
-        
+        if refracted_up:
+            y = y + slider_RI2.real_value
+
+        if (x >= screen_width / 2 + 50 and not refracted_down and not refracted_up):
+            y = y + slider_RI1.real_value    
+    
 
 
         pygame.draw.line(screen, 'red', (x, y), (x + 1, y), 5)
