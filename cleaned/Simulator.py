@@ -146,10 +146,11 @@ pygame.quit()
 
 
 
+
 # TO ADD : 
 
 # optimization
-
+#1
 # the laser
 # the transparent objects
 
