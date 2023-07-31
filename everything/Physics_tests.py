@@ -205,7 +205,7 @@ pygame.quit()
 
 
 
-'''
+
 
 import math
 import pygame
@@ -387,17 +387,37 @@ while not done:
 pygame.quit()
 
 
-# TO ADD : 
+'''
 
-# remove the prompt to ask !
-# the laser
-# the transparent objects
+    x = 25
+    y = screen_height / 2
+    refracted_down = False
+    refracted_up = False
+    square_touched = False
 
-# DONE :
-# A window with the output angle
-# In case of a reflexion !
-# # add comas
-# go from tkiner to pygame
-# show RI and Angle on screen
-# A slider to choose angle and RI
-#1
+    while(x < screen_width):
+
+        if not square_touched and x >= slider_square_x.real_value / 2 - 50 and slider_square_y.real_value / 2 - 50 <= y <= slider_square_y.real_value / 2 + 50:
+            y = y + slider_RI1.real_value
+            square_touched = True
+
+        if square_touched == True:
+            y = y + slider_RI1.real_value
+
+        if not refracted_down and y >= slider_square_y.real_value / 2 + 50 and slider_square_x.real_value / 2 - 50 <= x <= slider_square_x.real_value / 2 + 50:
+            y = y + slider_RI2.real_value
+            refracted_down = True
+
+        if refracted_down:
+            y = y + slider_RI2.real_value
+
+        if not refracted_up and y <= slider_square_y.real_value / 2 - 50 and slider_square_x.real_value / 2 - 50 <= x <= slider_square_x.real_value / 2 + 50:
+            y = y - slider_RI2.real_value
+            refracted_up = True  
+
+        if refracted_up:
+            y = y + slider_RI2.real_value
+
+        if (x >= slider_square_x.real_value / 2 + 50 and not refracted_down and not refracted_up):
+            y = y + slider_RI2.real_value    
+    
