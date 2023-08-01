@@ -2,8 +2,6 @@
 
 This code is part of my TM and will be in my final high school grade.
 
-> :warning: **The quality of this code is not guaranteed as it's my first full-scale Python project.**
-
 ## Refraction Simulator
 
 This repository contains a Python program that simulates the refraction of light. The simulator uses the Pygame library to create a graphical user interface for interactively adjusting the refractive indices and angles to observe the refraction phenomenon.
