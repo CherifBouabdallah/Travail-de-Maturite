@@ -1,4 +1,4 @@
-# Welcome to my Travail de Maturité!
+# Welcome to my Travail de Maturité !
 
 This code is part of my TM and will be in my final high school grade.
 
