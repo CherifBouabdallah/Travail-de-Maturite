@@ -657,7 +657,7 @@ while not done:
 
     screen.fill(black)
 
-    slider_RI1.calculation_value(2)
+    slider_RI1.calculation_value(3)
     slider_RI1.render_header(str(slider_RI1.real_value))
     slider_RI1.draw_slider()
     slider_RI1.blit_header(4.45, 15)
@@ -690,12 +690,16 @@ while not done:
 
     x = 25
     y = screen_height / 2
+    square_entered = False
     square_first_face_touched = False
     square_last_face_touched = False
     square_up_face_touched = False
     square_down_face_touched = False
 
     while(x < screen_width):
+
+        if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
+            square_entered = True
 
         if x == slider_square_x.real_value - 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
             square_first_face_touched = True
@@ -709,13 +713,17 @@ while not done:
         if square_last_face_touched:
             y = y + slider_RI2.real_value
 
-        if y == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50:
+        if y >= slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and not square_down_face_touched and square_entered:
             y = y + slider_RI2.real_value
             square_down_face_touched = True
         if square_down_face_touched:
             y = y + slider_RI2.real_value
 
-
+        if y <= slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and not square_up_face_touched and square_entered:
+            y = y + slider_RI2.real_value
+            square_up_face_touched = True
+        if square_up_face_touched:
+            y = y + slider_RI2.real_value
 
         pygame.draw.line(screen, 'red', (x, y), (x + 1, y), 5)
         x = x + 1
