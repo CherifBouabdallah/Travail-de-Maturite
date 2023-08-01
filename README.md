@@ -22,7 +22,7 @@ To run this simulator, you need to have Python and Pygame installed on your syst
 
 ### Note
 
-**Please note that this code is still experimental and may not provide accurate results.** It's my first full-scale Python project and may have limitations and bugs.
+**Please note that this code is still experimental and may not provide accurate results.**
 
 # Author
 
