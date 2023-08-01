@@ -687,12 +687,8 @@ while not done:
     pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
 
-    #pygame.draw.line(screen, 'red', (50, (screen_height / 2) ), (screen_width , (screen_height / 2)), 5)
-
     x = 25
     y = screen_height / 2
-    refracted_down = False
-    refracted_up = False
     square_first_face_touched = False
     square_last_face_touched = False
     square_up_face_touched = False
@@ -712,15 +708,9 @@ while not done:
         if square_last_face_touched:
             y = y + slider_RI2.real_value
 
-        if y == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50:
-            square_up_face_touched = True
-            y = y + slider_RI2.real_value
-        if square_up_face_touched:
-            y = y + slider_RI2.real_value
-
         if y == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50:
-            square_down_face_touched = True
             y = y + slider_RI2.real_value
+            square_down_face_touched = True
         if square_down_face_touched:
             y = y + slider_RI2.real_value
 

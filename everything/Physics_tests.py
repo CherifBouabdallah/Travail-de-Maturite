@@ -387,7 +387,7 @@ while not done:
 pygame.quit()
 
 
-'''
+
 
     x = 25
     y = screen_height / 2
@@ -421,3 +421,4 @@ pygame.quit()
         if (x >= slider_square_x.real_value / 2 + 50 and not refracted_down and not refracted_up):
             y = y + slider_RI2.real_value    
     
+'''
