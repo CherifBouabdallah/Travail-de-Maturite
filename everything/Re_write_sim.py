@@ -1,5 +1,6 @@
 import pygame
 import math
+import time
 
 pygame.init()
 caption = "Refraction Simulator"
@@ -22,7 +23,7 @@ mouse_x = 0
 mouse_y = 0
 
 class Slider:
-    def __init__(self, value, pos_x, pos_y):
+    def __init__(self, value, pos_x, pos_y, min_value, max_value, round):
         self.value = value
         self.grabbed = False
         self.width = slider_width
@@ -33,6 +34,9 @@ class Slider:
         self.align_x = 0
         self.align_y = 0
         self.start_value = 0
+        self.min_value = min_value
+        self.max_value = max_value
+        self.round = round
 
     def update_grabbed(self, mouse_x, mouse_y):
         mouse_x, mouse_y = event.pos
@@ -47,10 +51,10 @@ class Slider:
         if self.grabbed:
             mouse_x, _ = event.pos
             self.value = (mouse_x - self.pos_x) / self.width
-            self.value = max(0, min(self.value, 1))
+            self.value = max(self.min_value, min(self.value, self.max_value))
 
     def calculation_value(self, multiplyer):
-        self.real_value = round(self.value * multiplyer, 2)
+        self.real_value = round(self.value * multiplyer, self.round)
 
     def draw_slider(self):
         pygame.draw.rect(screen, gray, [self.pos_x, self.pos_y, self.width, self.height])
@@ -62,9 +66,12 @@ class Slider:
     def blit_header(self, align_x, align_y):
         screen.blit(self.header, (screen_width // align_x - self.header.get_width() // align_x, screen_height // align_y - self.header.get_height() // align_y))
 
-slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10)
-slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10)
-slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10)
+slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, -1, 1, 2) #this is experimental, remove when final ! (the -1 is exp)
+slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0, 1, 2)
+slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10, 0, 1, 2)
+
+slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0)
+slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95), 0, 1, 0)
 
 
 def Calculation():
@@ -78,8 +85,7 @@ def Calculation():
     else:
         Angle_of_Refraction_Degrees = 'Reflexion'
     
-    print(Angle_of_Refraction_Degrees)
-
+    #print(Angle_of_Refraction_Degrees)
 
 
 done = False
@@ -94,20 +100,26 @@ while not done:
                 slider_RI1.update_grabbed(mouse_x, mouse_y)
                 slider_RI2.update_grabbed(mouse_x, mouse_y)
                 slider_angle.update_grabbed(mouse_x, mouse_y)
+                slider_square_x.update_grabbed(mouse_x, mouse_y)
+                slider_square_y.update_grabbed(mouse_x, mouse_y)
 
         elif event.type == pygame.MOUSEBUTTONUP:
             slider_RI1.update_released()
             slider_RI2.update_released()
             slider_angle.update_released()
+            slider_square_x.update_released()
+            slider_square_y.update_released()
 
         elif event.type == pygame.MOUSEMOTION:
             slider_RI1.update_motion(mouse_x)
             slider_RI2.update_motion(mouse_x)
             slider_angle.update_motion(mouse_x)
+            slider_square_x.update_motion(mouse_x)
+            slider_square_y.update_motion(mouse_x)
 
     screen.fill(black)
 
-    slider_RI1.calculation_value(2)
+    slider_RI1.calculation_value(3)
     slider_RI1.render_header(str(slider_RI1.real_value))
     slider_RI1.draw_slider()
     slider_RI1.blit_header(4.45, 15)
@@ -121,13 +133,64 @@ while not done:
     slider_angle.render_header(str(slider_angle.real_value))
     slider_angle.draw_slider()
     slider_angle.blit_header(2, 15)
-    
-    Calculation()
 
+    slider_square_x.calculation_value(1000)
+    slider_square_x.render_header(str(slider_square_x.real_value))
+    slider_square_x.draw_slider()
+    slider_square_x.blit_header(3, 1.11)
+
+    slider_square_y.calculation_value(700)
+    slider_square_y.render_header(str(slider_square_y.real_value))
+    slider_square_y.draw_slider()
+    slider_square_y.blit_header(3, 1.05)
+
+    
+    #Calculation()
+
+    pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
+    pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
+
+    x = 25
+    y = screen_height / 2
+    square_entered = False
+    square_first_face_touched = False
+    square_last_face_touched = False
+    square_up_face_touched = False
+    square_down_face_touched = False
+
+    while(x < screen_width):
+
+        if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
+            square_entered = True
+
+        if x == slider_square_x.real_value - 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
+            square_first_face_touched = True
+            y = y + slider_RI1.real_value
+        if square_first_face_touched:
+            y = y + slider_RI1.real_value
+
+        if x == slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
+            y = y + slider_RI2.real_value
+            square_last_face_touched = True
+        if square_last_face_touched:
+            y = y + slider_RI2.real_value
+
+        if y >= slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and not square_down_face_touched and square_entered:
+            y = y + slider_RI2.real_value
+            square_down_face_touched = True
+        if square_down_face_touched:
+            y = y + slider_RI2.real_value
+
+        if y <= slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and not square_up_face_touched and square_entered:
+            y = y + slider_RI2.real_value
+            square_up_face_touched = True
+        if square_up_face_touched:
+            y = y + slider_RI2.real_value
+
+        pygame.draw.line(screen, 'red', (x, y), (x + 1, y), 5)
+        x = x + 1
 
     pygame.display.update()
     pygame.time.Clock().tick(60)
 
 pygame.quit()
-
-#1
