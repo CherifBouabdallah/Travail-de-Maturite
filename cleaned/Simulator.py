@@ -1,7 +1,7 @@
 import pygame
 import math
 from Slider_Class import Slider
-from Slider_Printer import Slider_printer
+#from Slider_Printer import Slider_printer
 
 pygame.init()
 caption = "Refraction Simulator"
@@ -24,6 +24,38 @@ mouse_x = 0
 mouse_y = 0
 
 
+slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, -1, 1, 2) #this is experimental, remove when final ! (the -1 is exp)
+slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0, 1, 2)
+slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10, 0, 1, 2)
+
+slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0)
+slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95), 0, 1, 0)
+
+def Slider_printer():
+    slider_RI1.calculation_value(2)
+    slider_RI1.render_header(str(slider_RI1.real_value))
+    slider_RI1.draw_slider()
+    slider_RI1.blit_header(4.45, 15)
+
+    slider_RI2.calculation_value(2)
+    slider_RI2.render_header(str(slider_RI2.real_value))
+    slider_RI2.draw_slider()
+    slider_RI2.blit_header(1.3, 15)
+    
+    slider_angle.calculation_value(180)
+    slider_angle.render_header(str(slider_angle.real_value))
+    slider_angle.draw_slider()
+    slider_angle.blit_header(2, 15)
+
+    slider_square_x.calculation_value(screen_width)
+    slider_square_x.render_header(str(slider_square_x.real_value))
+    slider_square_x.draw_slider()
+    slider_square_x.blit_header(3, 1.11)
+
+    slider_square_y.calculation_value(screen_height)
+    slider_square_y.render_header(str(slider_square_y.real_value))
+    slider_square_y.draw_slider()
+    slider_square_y.blit_header(3, 1.05)
 
 def Calculation():
     pre_calculation = ((slider_RI1.real_value * math.sin(math.radians(slider_angle.real_value))) / slider_RI2.real_value)

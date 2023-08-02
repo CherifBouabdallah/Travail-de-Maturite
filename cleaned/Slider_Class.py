@@ -1,6 +1,20 @@
+import pygame
+
 
 slider_width = 200
 slider_height = 20
+
+screen_width, screen_height = 1000, 700
+screen = pygame.display.set_mode((screen_width, screen_height))
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+gray = (128, 128, 128)
+Bigfont = pygame.font.SysFont("Calibri", 72)
+font = pygame.font.SysFont("Calibri", 52)
+Smallfont = pygame.font.SysFont("Calibri", 20)
+
+pygame.init()
 
 class Slider:
     def __init__(self, value, pos_x, pos_y, min_value, max_value, round):
@@ -45,3 +59,5 @@ class Slider:
 
     def blit_header(self, align_x, align_y):
         screen.blit(self.header, (screen_width // align_x - self.header.get_width() // align_x, screen_height // align_y - self.header.get_height() // align_y))
+
+pygame.quit()
