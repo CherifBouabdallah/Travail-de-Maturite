@@ -1,3 +1,7 @@
+
+slider_width = 200
+slider_height = 20
+
 class Slider:
     def __init__(self, value, pos_x, pos_y, min_value, max_value, round):
         self.value = value
