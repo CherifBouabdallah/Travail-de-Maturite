@@ -86,13 +86,28 @@ slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_h
 
 all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle
 
+
 def Square_function():
+
+    pre_calculation = ((slider_RI1.real_value * math.sin(math.radians(slider_angle.real_value))) / slider_RI2.real_value)
+
+    if -1 <= pre_calculation <= 1:
+        Angle_of_Refraction_Radians = math.asin(pre_calculation)
+        Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
+        Angle_of_Refraction_Degrees = round(Angle_of_Refraction_Degrees, 2)
+            
+    else:
+        Angle_of_Refraction_Degrees = 'Reflexion'
+
 
     pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
 
-    x_increment = (math.sin(math.radians(slider_laser_angle.real_value)))
-    y_increment = (math.cos(math.radians(slider_laser_angle.real_value)))
+    x_increment = round((math.sin(math.radians(slider_laser_angle.real_value))), 2)
+    y_increment = round((math.cos(math.radians(slider_laser_angle.real_value))), 2)
+
+    x_square_increment = round((math.sin(math.radians(Angle_of_Refraction_Degrees))), 2)
+    y_square_increment = round((math.sin(math.radians(Angle_of_Refraction_Degrees))), 2)
 
     x = 25
     y = slider_laser_x.real_value
@@ -109,7 +124,8 @@ def Square_function():
 
         if x <= slider_square_x.real_value - 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50 and not square_first_face_touched and square_entered:
             square_first_face_touched = True
-            y = y + slider_RI1.real_value
+            y = y + y_square_increment
+            x = x + x_square_increment
         if square_first_face_touched:
             y = y + slider_RI1.real_value
 
@@ -132,8 +148,8 @@ def Square_function():
             y = y + slider_RI2.real_value
 
         pygame.draw.line(screen, 'red', (x, y), (x + 1, y), 5)
-        x = x + round(x_increment, 2)
-        y = y + round(y_increment, 2)
+        x = x + x_increment
+        y = y + y_increment
 
 def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle):
     slider_RI1.calculation_value(2)
@@ -170,18 +186,6 @@ def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider
     slider_laser_angle.render_header(str(slider_laser_angle.real_value))
     slider_laser_angle.draw_slider()
     slider_laser_angle.blit_header(4.45, 1.05)
-
-def Calculation():
-    pre_calculation = ((slider_RI1.real_value * math.sin(math.radians(slider_angle.real_value))) / slider_RI2.real_value)
-
-    if -1 <= pre_calculation <= 1:
-        Angle_of_Refraction_Radians = math.asin(pre_calculation)
-        Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
-        Angle_of_Refraction_Degrees = round(Angle_of_Refraction_Degrees, 2)
-            
-    else:
-        Angle_of_Refraction_Degrees = 'Reflexion'
-
 
 
 done = False
@@ -224,7 +228,6 @@ while not done:
     screen.fill(black)
     Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle)
     Square_function()
-    Calculation()
     pygame.display.update()
     pygame.time.Clock().tick(60)
     
