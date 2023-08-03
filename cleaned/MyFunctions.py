@@ -1,5 +1,7 @@
 import pygame
 
+pygame.init()
+
 black = (0, 0, 0)
 white = (255, 255, 255)
 gray = (128, 128, 128)
