@@ -87,7 +87,7 @@ slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_h
 all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle
 
 def Calculation():
-    g
+    return
 
 def Square_function():
 
