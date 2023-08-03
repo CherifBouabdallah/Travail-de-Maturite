@@ -1,7 +1,6 @@
 import pygame
 import math
-from MyFunctions import Slider
-from MyFunctions import Slider_printer 
+from MyFunctions import * #the "*" imports all functions !
 
 pygame.init()
 caption = "Refraction Simulator"
@@ -23,66 +22,16 @@ slider_height = 20
 mouse_x = 0
 mouse_y = 0
 
+
 slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0, 1, 2)
 slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0, 1, 2)
 slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10, 0, 1, 2)
-
 slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0)
 slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95), 0, 1, 0)
-
 slider_laser_x = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0)
 slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0, 1, 2)
 
-'''
-def Slider_printer():
-    slider_RI1.calculation_value(2)
-    slider_RI1.render_header(str(slider_RI1.real_value))
-    slider_RI1.draw_slider()
-    slider_RI1.blit_header(4.45, 10)
-
-    slider_RI2.calculation_value(2)
-    slider_RI2.render_header(str(slider_RI2.real_value))
-    slider_RI2.draw_slider()
-    slider_RI2.blit_header(1.3, 10)
-    
-    slider_angle.calculation_value(180)
-    slider_angle.render_header(str(slider_angle.real_value))
-    slider_angle.draw_slider()
-    slider_angle.blit_header(2, 10)
-
-    slider_square_x.calculation_value(screen_width)
-    slider_square_x.render_header(str(slider_square_x.real_value))
-    slider_square_x.draw_slider()
-    slider_square_x.blit_header(2, 1.11)
-
-    slider_square_y.calculation_value(screen_height)
-    slider_square_y.render_header(str(slider_square_y.real_value))
-    slider_square_y.draw_slider()
-    slider_square_y.blit_header(2, 1.05)
-
-    slider_laser_x.calculation_value(screen_height)
-    slider_laser_x.render_header(str(slider_laser_x.real_value))
-    slider_laser_x.draw_slider()
-    slider_laser_x.blit_header(4.45, 1.11)
-
-    slider_laser_angle.calculation_value(180)
-    slider_laser_angle.render_header(str(slider_laser_angle.real_value))
-    slider_laser_angle.draw_slider()
-    slider_laser_angle.blit_header(4.45, 1.05)
-'''
-
-def Calculation(slider_RI1, slider_angle, slider_RI2):
-    pre_calculation = ((slider_RI1.real_value * math.sin(math.radians(slider_angle.real_value))) / slider_RI2.real_value)
-
-    if -1 <= pre_calculation <= 1:
-        Angle_of_Refraction_Radians = math.asin(pre_calculation)
-        Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
-        Angle_of_Refraction_Degrees = round(Angle_of_Refraction_Degrees, 2)
-        
-    else:
-        Angle_of_Refraction_Degrees = 'Reflexion'
-    
-    return Angle_of_Refraction_Degrees
+all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle
 
 def Square_function():
 
@@ -135,49 +84,35 @@ def Square_function():
         x = x + round(x_increment, 2)
         y = y + round(y_increment, 2)
 
+angle_of_refraction_degrees = Calculation(slider_RI1, slider_angle, slider_RI2)
+
+
 done = False
 while not done:
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
-                slider_RI1.update_grabbed(event, mouse_x, mouse_y)
-                slider_RI2.update_grabbed(event, mouse_x, mouse_y)
-                slider_angle.update_grabbed(event, mouse_x, mouse_y)
-                slider_square_x.update_grabbed(event, mouse_x, mouse_y)
-                slider_square_y.update_grabbed(event, mouse_x, mouse_y)
-                slider_laser_x.update_grabbed(event, mouse_x, mouse_y)
-                slider_laser_angle.update_grabbed(event, mouse_x, mouse_y)
+                all_sliders.update_grabbed(event, mouse_x, mouse_y)
+
 
         elif event.type == pygame.MOUSEBUTTONUP:
-            slider_RI1.update_released(event)
-            slider_RI2.update_released(event)
-            slider_angle.update_released(event)
-            slider_square_x.update_released(event)
-            slider_square_y.update_released(event)
-            slider_laser_x.update_released(event)
-            slider_laser_angle.update_released(event)
+            all_sliders.update_released(event)
+
 
         elif event.type == pygame.MOUSEMOTION:
-            slider_RI1.update_motion(event, mouse_x)
-            slider_RI2.update_motion(event, mouse_x)
-            slider_angle.update_motion(event, mouse_x)
-            slider_square_x.update_motion(event, mouse_x)
-            slider_square_y.update_motion(event, mouse_x)
-            slider_laser_x.update_motion(event, mouse_x)
-            slider_laser_angle.update_motion(event, mouse_x)
-    
+            all_sliders.update_motion(event, mouse_x)
+
     screen.fill(black)
-    Slider_printer()
+    Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle)
     angle_of_refraction_degrees = Calculation(slider_RI1, slider_angle, slider_RI2)
     Square_function()
 
     pygame.display.update()
     pygame.time.Clock().tick(60)
-
+    
 pygame.quit()
 
 # TO ADD : 

@@ -1,4 +1,5 @@
 import pygame
+import math
 
 pygame.init()
 
@@ -16,7 +17,7 @@ mouse_x = 0
 mouse_y = 0
 
 class Slider:
-    def __init__(self, value, pos_x, pos_y, min_value, max_value, round):
+    def __init__(self, value, pos_x, pos_y, min_value, max_value, round, real.value):
         self.value = value
         self.grabbed = False
         self.width = slider_width
@@ -31,6 +32,7 @@ class Slider:
         self.max_value = max_value
         self.round = round
         self.negative_value = 0
+        self.real_value = 0
 
     def update_grabbed(self, event, mouse_x, mouse_y):
         mouse_x, mouse_y = event.pos
@@ -68,7 +70,6 @@ class Slider:
     def blit_header(self, align_x, align_y):
         screen.blit(self.header, (screen_width // align_x - self.header.get_width() // align_x, screen_height // align_y - self.header.get_height() // align_y))
 
-
 def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle):
     slider_RI1.calculation_value(2)
     slider_RI1.render_header(str(slider_RI1.real_value))
@@ -104,3 +105,16 @@ def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider
     slider_laser_angle.render_header(str(slider_laser_angle.real_value))
     slider_laser_angle.draw_slider()
     slider_laser_angle.blit_header(4.45, 1.05)
+
+def Calculation(slider_RI1, slider_angle, slider_RI2):
+    pre_calculation = ((slider_RI1.real_value * math.sin(math.radians(slider_angle.real_value))) / slider_RI2.real_value)
+
+    if -1 <= pre_calculation <= 1:
+        Angle_of_Refraction_Radians = math.asin(pre_calculation)
+        Angle_of_Refraction_Degrees = math.degrees(Angle_of_Refraction_Radians)
+        Angle_of_Refraction_Degrees = round(Angle_of_Refraction_Degrees, 2)
+        
+    else:
+        Angle_of_Refraction_Degrees = 'Reflexion'
+    
+    return Angle_of_Refraction_Degrees
