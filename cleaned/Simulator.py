@@ -12,15 +12,16 @@ pygame.display.set_caption(caption)
 black = (0, 0, 0)
 white = (255, 255, 255)
 gray = (128, 128, 128)
+
 Bigfont = pygame.font.SysFont("Calibri", 72)
 font = pygame.font.SysFont("Calibri", 52)
 Smallfont = pygame.font.SysFont("Calibri", 22)
 
 slider_width = 200
 slider_height = 20
-
 mouse_x = 0
 mouse_y = 0
+
 '''
 class Slider:
     def __init__(self, value, pos_x, pos_y, min_value, max_value, round):
