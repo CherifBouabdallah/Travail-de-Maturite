@@ -58,8 +58,6 @@ class Slider:
 
         self.negative_value = -round(self.negative_value * multiplyer, self.round)
     
-        
-
     def draw_slider(self):
         pygame.draw.rect(screen, gray, [self.pos_x, self.pos_y, self.width, self.height])
         pygame.draw.rect(screen, white, [self.pos_x + self.value * self.width - 5, self.pos_y, 10, self.height])
