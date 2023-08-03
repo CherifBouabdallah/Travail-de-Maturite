@@ -16,7 +16,7 @@ mouse_x = 0
 mouse_y = 0
 
 class Slider:
-    def __init__(self, value, pos_x, pos_y, min_value, max_value, round):
+    def __init__(self, value, pos_x, pos_y, min_value, max_value, round, real_value):
         self.value = value
         self.grabbed = False
         self.width = slider_width
@@ -31,6 +31,7 @@ class Slider:
         self.max_value = max_value
         self.round = round
         self.negative_value = 0
+        self.real_value = real_value
 
     def update_grabbed(self, event, mouse_x, mouse_y):
         mouse_x, mouse_y = event.pos
