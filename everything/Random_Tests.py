@@ -733,3 +733,62 @@ while not done:
 
 pygame.quit()
 '''
+
+import pygame
+import sys
+
+pygame.init()
+
+# Constants
+WIDTH, HEIGHT = 800, 600
+BUTTON_WIDTH, BUTTON_HEIGHT = 200, 50
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+FPS = 60
+
+# Initialize the screen and clock
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Satisfying Button Example")
+clock = pygame.time.Clock()
+
+def reset_program():
+    # Reset the state of your program here
+    print("Resetting the program...")
+
+def draw_button(is_pressed):
+    # Draw the button on the screen
+    button_color = GREEN if is_pressed else WHITE
+    button_rect = pygame.Rect((WIDTH - BUTTON_WIDTH) // 2, (HEIGHT - BUTTON_HEIGHT) // 2, BUTTON_WIDTH, BUTTON_HEIGHT)
+    pygame.draw.rect(screen, button_color, button_rect)
+    font = pygame.font.Font(None, 30)
+    text = font.render("Reset", True, BLACK)
+    text_rect = text.get_rect(center=button_rect.center)
+    screen.blit(text, text_rect)
+
+running = True
+button_pressed = False
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+                button_rect = pygame.Rect((WIDTH - BUTTON_WIDTH) // 2, (HEIGHT - BUTTON_HEIGHT) // 2, BUTTON_WIDTH, BUTTON_HEIGHT)
+                if button_rect.collidepoint(mouse_pos):
+                    button_pressed = True
+                    reset_program()
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                button_pressed = False
+
+    screen.fill(BLACK)
+    draw_button(button_pressed)
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+pygame.quit()
+sys.exit()
