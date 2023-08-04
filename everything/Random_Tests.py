@@ -734,61 +734,68 @@ while not done:
 pygame.quit()
 '''
 
+
 import pygame
 import sys
+import math
 
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 800, 600
-BUTTON_WIDTH, BUTTON_HEIGHT = 200, 50
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+LASER_SPEED = 5
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
-FPS = 60
 
-# Initialize the screen and clock
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Satisfying Button Example")
-clock = pygame.time.Clock()
+# Set up the screen
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Reflecting Laser")
 
-def reset_program():
-    # Reset the state of your program here
-    print("Resetting the program...")
+# Laser class
+class Laser(pygame.sprite.Sprite):
+    def __init__(self, x, y, angle_degrees):
+        super().__init__()
+        self.image = pygame.Surface((5, 15))
+        self.image.fill(WHITE)
+        self.rect = self.image.get_rect(center=(x, y))
+        self.angle_radians = math.radians(angle_degrees)
+        self.speed_x = LASER_SPEED * math.cos(self.angle_radians)
+        self.speed_y = LASER_SPEED * math.sin(self.angle_radians)
 
-def draw_button(is_pressed):
-    # Draw the button on the screen
-    button_color = GREEN if is_pressed else WHITE
-    button_rect = pygame.Rect((WIDTH - BUTTON_WIDTH) // 2, (HEIGHT - BUTTON_HEIGHT) // 2, BUTTON_WIDTH, BUTTON_HEIGHT)
-    pygame.draw.rect(screen, button_color, button_rect)
-    font = pygame.font.Font(None, 30)
-    text = font.render("Reset", True, BLACK)
-    text_rect = text.get_rect(center=button_rect.center)
-    screen.blit(text, text_rect)
+    def update(self):
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
 
-running = True
-button_pressed = False
-while running:
+        # Check for collisions with the screen boundaries
+        if self.rect.left <= 0 or self.rect.right >= SCREEN_WIDTH:
+            self.speed_x *= -1
+
+        if self.rect.top <= 0 or self.rect.bottom >= SCREEN_HEIGHT:
+            self.speed_y *= -1
+
+# Sprite Groups
+all_sprites = pygame.sprite.Group()
+
+# Create the laser and add it to the sprite group (45-degree angle)
+laser = Laser(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, 45)
+all_sprites.add(laser)
+
+# Main game loop
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mouse_pos = pygame.mouse.get_pos()
-                button_rect = pygame.Rect((WIDTH - BUTTON_WIDTH) // 2, (HEIGHT - BUTTON_HEIGHT) // 2, BUTTON_WIDTH, BUTTON_HEIGHT)
-                if button_rect.collidepoint(mouse_pos):
-                    button_pressed = True
-                    reset_program()
+            pygame.quit()
+            sys.exit()
 
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:
-                button_pressed = False
+    # Update
+    all_sprites.update()
 
-    screen.fill(BLACK)
-    draw_button(button_pressed)
+    # Draw
+    screen.fill((0, 0, 0))
+    all_sprites.draw(screen)
 
+    # Refresh the display
     pygame.display.flip()
-    clock.tick(FPS)
 
-pygame.quit()
-sys.exit()
+    # Control the frame rate
+    pygame.time.Clock().tick(60)

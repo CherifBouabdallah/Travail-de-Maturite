@@ -22,6 +22,7 @@ slider_height = 20
 mouse_x = 0
 mouse_y = 0
 
+
 slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0, 1, 2, None)
 slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0, 1, 2, None)
 slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10, 0, 1, 2, None)
@@ -33,7 +34,8 @@ slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_h
 all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle
 
 def Calculation():
-    pre_calculation_in = ((slider_RI1.real_value * math.sin(math.radians(180-(slider_laser_angle.real_value-90)))) / slider_RI2.real_value)
+
+    pre_calculation_in = ((slider_RI1.real_value * math.sin(math.radians(round(slider_laser_angle.real_value, 2)-90))) / slider_RI2.real_value)
 
     if -1 <= pre_calculation_in <= 1:
         Angle_of_Refraction_Radians = math.asin(pre_calculation_in)
@@ -43,28 +45,16 @@ def Calculation():
     else:
         Angle_of_Refraction_Degrees_in = 9000
     
-    x_square_increment_in = round((math.sin(math.radians(Angle_of_Refraction_Degrees_in))), 2)
-    y_square_increment_in = round((math.sin(math.radians(Angle_of_Refraction_Degrees_in))), 2)
+    x_square_increment_in = round((math.sin(math.radians((slider_laser_angle.real_value-90) - Angle_of_Refraction_Degrees_in))), 2)
+    y_square_increment_in = round((math.sin(math.radians((slider_laser_angle.real_value-90) - Angle_of_Refraction_Degrees_in))), 2)
 
-    pre_calculation_out = ((slider_RI2.real_value * math.sin(math.radians(180-(slider_laser_angle.real_value-90)))) / slider_RI1.real_value)
 
-    if -1 <= pre_calculation_out <= 1:
-        Angle_of_Refraction_Radians = math.asin(pre_calculation_out)
-        Angle_of_Refraction_Degrees_out = math.degrees(Angle_of_Refraction_Radians)
-        Angle_of_Refraction_Degrees_out = round(Angle_of_Refraction_Degrees_out, 2)
-            
-    else:
-        Angle_of_Refraction_Degrees_in = 9000
+    return x_square_increment_in, y_square_increment_in, Angle_of_Refraction_Degrees_in
 
-    x_square_increment_out = round((math.sin(math.radians(Angle_of_Refraction_Degrees_out))), 2)
-    y_square_increment_out = round((math.sin(math.radians(Angle_of_Refraction_Degrees_out))), 2)
-
-    return x_square_increment_in, y_square_increment_in, x_square_increment_out, y_square_increment_out
 
 def Square_function():
 
-    x_square_increment_in, y_square_increment_in, x_square_increment_out, y_square_increment_out = Calculation()
-
+    x_square_increment_in, y_square_increment_in, Angle_of_Refraction_Degrees_in = Calculation()
 
     pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
@@ -95,11 +85,11 @@ def Square_function():
 
         if round(x, 0)+-1 >= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50 and not square_last_face_touched and square_entered:
             square_last_face_touched = True
-            y = y + y_square_increment_out
-            x = x + x_square_increment_out
+            y = y + slider_RI2.real_value
+            x = x + 0
         if square_last_face_touched:
-            y = y + y_square_increment_out
-            x = x + x_square_increment_out
+            y = y + slider_RI2.real_value
+            x = x + 0
 
         if round(y, 0)+-1 >= slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and not square_down_face_touched and square_entered:
             y = y + slider_RI2.real_value
