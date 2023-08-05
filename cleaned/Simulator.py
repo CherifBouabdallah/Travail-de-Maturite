@@ -21,10 +21,11 @@ slider_width = 200
 slider_height = 20
 mouse_x = 0
 mouse_y = 0
+refraction = None
 
 
-slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0, 1, 2, None)
-slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0, 1, 2, None)
+slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0.05, 1, 2, None)
+slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0.05, 1, 2, None)
 slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10, 0, 1, 2, None)
 slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0, None)
 slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95), 0, 1, 0, None)
@@ -35,32 +36,38 @@ all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_squa
 
 def Calculation():
 
+    x_laser_increment = round((math.sin(math.radians(slider_laser_angle.real_value))), 2)
+    y_laser_increment = round((math.cos(math.radians(slider_laser_angle.real_value))), 2)
+
     pre_calculation_in = ((slider_RI1.real_value * math.sin(math.radians(round(slider_laser_angle.real_value, 2)-90))) / slider_RI2.real_value)
 
     if -1 <= pre_calculation_in <= 1:
         Angle_of_Refraction_Radians = math.asin(pre_calculation_in)
         Angle_of_Refraction_Degrees_in = math.degrees(Angle_of_Refraction_Radians)
         Angle_of_Refraction_Degrees_in = round(Angle_of_Refraction_Degrees_in, 2)
-            
+
+        x_square_increment_in = round(math.sin(math.radians(Angle_of_Refraction_Degrees_in)), 2)
+        y_square_increment_in = round(math.cos(math.radians(Angle_of_Refraction_Degrees_in)), 2)
+        x_square_angle_in = round(math.sin(math.radians(slider_laser_angle.real_value-90)), 2)
+        y_square_angle_in = round(math.cos(math.radians(slider_laser_angle.real_value-90)), 2)
+        x_square_delta_increment_in = x_square_increment_in - x_square_angle_in
+        y_square_delta_increment_in = y_square_increment_in - y_square_angle_in   
+        refraction = True
+
     else:
-        Angle_of_Refraction_Degrees_in = 9000
-    
-    x_square_increment_in = round((math.sin(math.radians((slider_laser_angle.real_value-90) - Angle_of_Refraction_Degrees_in))), 2)
-    y_square_increment_in = round((math.sin(math.radians((slider_laser_angle.real_value-90) - Angle_of_Refraction_Degrees_in))), 2)
+        x_square_delta_increment_in = -round(math.sin(math.radians(slider_laser_angle.real_value-90)), 2) 
+        y_square_delta_increment_in = -round(math.cos(math.radians(slider_laser_angle.real_value-90)), 2)
+        refraction = False
 
-
-    return x_square_increment_in, y_square_increment_in, Angle_of_Refraction_Degrees_in
+    return x_laser_increment, y_laser_increment, x_square_delta_increment_in, y_square_delta_increment_in, refraction
 
 
 def Square_function():
 
-    x_square_increment_in, y_square_increment_in, Angle_of_Refraction_Degrees_in = Calculation()
+    x_laser_increment, y_laser_increment, x_square_delta_increment_in, y_square_delta_increment_in, refraction = Calculation()
 
     pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
-
-    x_increment = round((math.sin(math.radians(slider_laser_angle.real_value))), 2)
-    y_increment = round((math.cos(math.radians(slider_laser_angle.real_value))), 2)
 
     x = 25
     y = slider_laser_x.real_value
@@ -72,18 +79,21 @@ def Square_function():
 
     while(x < screen_width):
 
+        #print(x_square_delta_increment_in, x_square_delta_increment_in, x_square_increment_in, x_square_angle_in, y_square_increment_in, y_square_angle_in)
+
         if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
             square_entered = True
 
         if round(x, 0)+-1 <= slider_square_x.real_value - 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50 and not square_first_face_touched and square_entered:
             square_first_face_touched = True
-            y = y + y_square_increment_in
-            x = x + x_square_increment_in
-        if square_first_face_touched:
-            y = y + y_square_increment_in
-            x = x + x_square_increment_in
+            x = x + x_square_delta_increment_in
+            y = y + y_square_delta_increment_in
 
-        if round(x, 0)+-1 >= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50 and not square_last_face_touched and square_entered:
+        if square_first_face_touched:
+            x = x + x_square_delta_increment_in
+            y = y + y_square_delta_increment_in
+
+        """ if round(x, 0)+-1 >= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50 and not square_last_face_touched and square_entered:
             square_last_face_touched = True
             y = y + slider_RI2.real_value
             x = x + 0
@@ -101,11 +111,14 @@ def Square_function():
             y = y + slider_RI2.real_value
             square_up_face_touched = True
         if square_up_face_touched:
-            y = y + slider_RI2.real_value
+            y = y + slider_RI2.real_value """
 
         pygame.draw.line(screen, 'red', (x, y), (x + 1, y), 5)
-        x = x + x_increment
-        y = y + y_increment
+        
+
+        x = x + x_laser_increment
+        y = y + y_laser_increment
+
 
 def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle):
     slider_RI1.calculation_value(2)
@@ -139,7 +152,7 @@ def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider
     slider_laser_x.blit_header(4.45, 1.11)
 
     slider_laser_angle.calculation_value(180)
-    slider_laser_angle.render_header(str(slider_laser_angle.real_value))
+    slider_laser_angle.render_header(str(round(slider_laser_angle.real_value - 90, 0)))
     slider_laser_angle.draw_slider()
     slider_laser_angle.blit_header(4.45, 1.05)
 
