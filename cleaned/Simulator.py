@@ -30,7 +30,7 @@ slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height 
 slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0, None, screen_width)
 slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95), 0, 1, 0, None , screen_height)
 slider_laser_x = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0, None, screen_height)
-slider_laser_angle = Slider(0.75, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0, 1, 2, None, 270)
+slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0, 1, 2, None, 180)
 
 all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle
 
@@ -150,7 +150,7 @@ def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider
     slider_laser_x.draw_slider()
     slider_laser_x.blit_header(4.45, 1.11)
 
-    slider_laser_angle.calculation_value()
+    slider_laser_angle.calculation_value(90)
     slider_laser_angle.render_header(str(round(slider_laser_angle.real_value - 90, 0)))
     slider_laser_angle.draw_slider()
     slider_laser_angle.blit_header(4.45, 1.05)

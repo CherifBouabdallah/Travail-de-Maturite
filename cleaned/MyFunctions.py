@@ -49,8 +49,8 @@ class Slider:
             self.value = (mouse_x - self.pos_x) / self.width
             self.value = max(self.min_value, min(self.value, self.max_value))
 
-    def calculation_value(self):
-        self.real_value = round(self.value * self.multiplyer, self.round)
+    def calculation_value(self, addon):
+        self.real_value = round(self.value * self.multiplyer + addon, self.round)
         if self.value == 0:
             self.negative_value = 0
         if self.value < 0.5:
