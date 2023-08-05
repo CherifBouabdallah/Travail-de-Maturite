@@ -16,7 +16,7 @@ mouse_x = 0
 mouse_y = 0
 
 class Slider:
-    def __init__(self, value, pos_x, pos_y, min_value, max_value, round, real_value):
+    def __init__(self, value, pos_x, pos_y, min_value, max_value, round, real_value, multiplyer):
         self.value = value
         self.grabbed = False
         self.width = slider_width
@@ -32,6 +32,7 @@ class Slider:
         self.round = round
         self.negative_value = 0
         self.real_value = real_value
+        self.multiplyer = multiplyer
 
     def update_grabbed(self, event, mouse_x, mouse_y):
         mouse_x, mouse_y = event.pos
@@ -48,8 +49,8 @@ class Slider:
             self.value = (mouse_x - self.pos_x) / self.width
             self.value = max(self.min_value, min(self.value, self.max_value))
 
-    def calculation_value(self, multiplyer):
-        self.real_value = round(self.value * multiplyer, self.round)
+    def calculation_value(self):
+        self.real_value = round(self.value * self.multiplyer, self.round)
         if self.value == 0:
             self.negative_value = 0
         if self.value < 0.5:
@@ -57,7 +58,7 @@ class Slider:
         if self.value > 0.5:
             self.negative_value = -self.value + 0.5
 
-        self.negative_value = -round(self.negative_value * multiplyer, self.round)
+        self.negative_value = -round(self.negative_value * self.multiplyer, self.round)
     
     def draw_slider(self):
         pygame.draw.rect(screen, gray, [self.pos_x, self.pos_y, self.width, self.height])
