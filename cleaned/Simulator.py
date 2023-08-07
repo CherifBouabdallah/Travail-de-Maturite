@@ -50,7 +50,7 @@ def Calculation():
         x_square_angle_in = round(math.sin(math.radians(slider_laser_angle.real_value-90)), 2)
         y_square_angle_in = round(math.cos(math.radians(slider_laser_angle.real_value-90)), 2)
         x_square_delta_increment_in = x_square_increment_in - x_square_angle_in
-        y_square_delta_increment_in = y_square_increment_in + y_square_angle_in   
+        y_square_delta_increment_in = y_square_increment_in - y_square_angle_in   
         refraction = True
 
     else:
