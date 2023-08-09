@@ -143,7 +143,7 @@ def Square_function():
                 test = x_increment_in/y_increment_in
     while(x < screen_width):
 
-        print(test, 60/97, 97/60, x_increment_in, y_increment_in-1)
+        #print(test, 60/97, 97/60, x_increment_in, y_increment_in-1)
 
         if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
             square_entered = True
