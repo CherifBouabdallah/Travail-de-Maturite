@@ -114,6 +114,7 @@ def Square_function():
     y = slider_laser_pos.real_value
     square_entered = False
     square_first_face_touched = False
+    test = 0
 
     pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
@@ -128,16 +129,21 @@ def Square_function():
         y_increment_in = 0
 
     else:
-        pre_calculation_in = (slider_RI1.real_value * math.sin(math.radians(slider_laser_angle.real_value-90)) / slider_RI2.real_value)
 
+        pre_calculation_in = (slider_RI1.real_value * math.sin(math.radians(abs(slider_laser_angle.real_value-90))) / slider_RI2.real_value)
+    
         if -1 <= pre_calculation_in <= 1 and math.degrees(math.asin(pre_calculation_in)) != 0:
             angle_of_refraction_degrees_in = math.degrees(math.asin(pre_calculation_in))
-            x_increment_in = round(math.sin(math.radians(angle_of_refraction_degrees_in)), 2)
-            y_increment_in = round(math.cos(math.radians(angle_of_refraction_degrees_in)), 2)
-
+            x_increment_in = round(math.sin(math.radians(angle_of_refraction_degrees_in)), 5)
+            y_increment_in = round(math.cos(math.radians(angle_of_refraction_degrees_in)), 5)
+            if x_increment_in < 0:
+                x_increment_in = 1-x_increment_in
+            if slider_laser_angle.real_value-90 < 0:
+                y_increment_in = 1-y_increment_in + 2
+                test = x_increment_in/y_increment_in
     while(x < screen_width):
 
-        #print(y_laser_increment, y_increment_in, angle_of_refraction_degrees_in)
+        print(test, 60/97, 97/60, x_increment_in, y_increment_in-1)
 
         if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
             square_entered = True
@@ -156,9 +162,11 @@ def Square_function():
         if square_entered and slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 90:
             y = y + 0
             x = x + 0
+
         else:
             y = y + y_laser_increment
             x = x + x_laser_increment
+
 
 def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle):
     slider_RI1.calculation_value(0)
@@ -242,3 +250,22 @@ while not done:
     pygame.time.Clock().tick(60)
     
 pygame.quit()
+
+# TO ADD : 
+
+# optimization
+# the transparent square
+# the transparent triangle
+
+# DONE :
+
+# the laser movement
+# A window with the output angle
+# In case of a reflexion !
+# # add comas
+# go from tkiner to pygame
+# show RI and Angle on screen
+# A slider to choose angle and RI
+# remove the prompt to ask for angles
+# fix crash !
+# # a reset button
