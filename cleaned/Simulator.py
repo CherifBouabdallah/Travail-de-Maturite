@@ -153,7 +153,6 @@ def Square_function():
     y = slider_laser_pos.real_value
     square_entered = False
     square_first_face_touched = False
-    test = 0
 
     pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
@@ -179,10 +178,9 @@ def Square_function():
                 x_increment_in = 1-x_increment_in
             if slider_laser_angle.real_value < 0:
                 y_increment_in = 1-y_increment_in + 2
-                test = x_increment_in/y_increment_in
     while(x < screen_width):
 
-        #print(test, 60/97, 97/60, x_increment_in, y_increment_in-1)
+        #print(, 60/97, 97/60, x_increment_in, y_increment_in-1)
 
         if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
             square_entered = True
@@ -256,8 +254,10 @@ pygame.quit()
 # TO ADD : 
 
 # optimization
+# a button to set IR to water, glass etc
 # the transparent square
 # the transparent triangle
+
 
 # DONE :
 
