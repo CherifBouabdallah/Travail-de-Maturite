@@ -178,6 +178,7 @@ def Square_function():
                 x_increment_in = 1-x_increment_in
             if slider_laser_angle.real_value < 0:
                 y_increment_in = 1-y_increment_in + 2
+
     while(x < screen_width):
 
         #print(, 60/97, 97/60, x_increment_in, y_increment_in-1)
