@@ -21,7 +21,7 @@ slider_width = 200
 slider_height = 20
 mouse_x = 0
 mouse_y = 0
-refraction = None
+
 
 
 class Slider:
@@ -151,60 +151,81 @@ def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider
 def Square_function():
     x = 25
     y = slider_laser_pos.real_value
+    laser_color = 'red'
+    square_color = white
+    refraction = None
     square_entered = False
-    square_first_face_touched = False
-
-    pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
+    square_exited =  False 
+    
+    pygame.draw.rect(screen, square_color, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
 
     x_increment_in = 0
     y_increment_in = 0
     angle_of_refraction_in = 0
+    up_face_touched = False
+
     x_laser_increment = round(math.cos(slider_laser_angle.real_value), 2)
     y_laser_increment = -round(math.sin(slider_laser_angle.real_value), 2)
 
-    if slider_RI1.real_value == slider_RI2.real_value or slider_laser_angle.real_value == 90:
-        y_increment_in = 0
-
-    else:
-
-        pre_calculation_in = (slider_RI1.real_value * math.sin(slider_laser_angle.real_value) / slider_RI2.real_value)
-    
-        if -1 <= pre_calculation_in <= 1 and math.asin(pre_calculation_in) != 0:
-            angle_of_refraction_in = math.asin(pre_calculation_in)
-            x_increment_in = round(math.sin(angle_of_refraction_in), 5)
-            y_increment_in = round(math.cos(angle_of_refraction_in), 5)
-            if x_increment_in < 0:
-                x_increment_in = 1-x_increment_in
-            if slider_laser_angle.real_value < 0:
-                y_increment_in = 1-y_increment_in + 2
-
-                
     while(x < screen_width):
 
-        #print(slider_laser_angle.real_value)
+        #print(x_increment_in, y_increment_in)
 
-        if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
-            square_entered = True
+        pre_calculation_in = (slider_RI1.real_value * math.sin(slider_laser_angle.real_value) / slider_RI2.real_value)
+        if -1 <= pre_calculation_in <= 1:
+            
+            angle_of_refraction_in = math.asin(pre_calculation_in)
+            
+            x_increment_in = round(math.cos(angle_of_refraction_in), 2)
+            y_increment_in = -round(math.sin(angle_of_refraction_in), 2)
 
-        if round(x, 0)+-1 <= slider_square_x.real_value - 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50 and not square_first_face_touched and square_entered and slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 90:
-            square_first_face_touched = True
-            y = y + y_increment_in - 1
-            x = x + x_increment_in
+        pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value)
+        if -1 <= pre_calculation_out <= 1:
+            
+            angle_of_refraction_out = math.asin(pre_calculation_in)
+            
+            x_increment_out = round(math.cos(angle_of_refraction_out), 2)
+            y_increment_out = -round(math.sin(angle_of_refraction_out), 2)
 
-        if square_first_face_touched:
-            y = y + y_increment_in - 1
-            x = x + x_increment_in
 
-        pygame.draw.line(screen, 'red', (x, y), (x + 1, y), 5)
+        if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0:
+            refraction = True
         
-        if square_entered and slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 90:
-            y = y + 0
-            x = x + 0
+        if round(y, 0)+-1 == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction:
+            up_face_touched = True
+            x_increment_in = 90 - x_increment_in
+            y_increment_in = 90 - y_increment_in
+            print('great success')
+        
+        if (slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50) and (slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50):
+            square_entered = True
+            laser_color = 'green'
+
+        if square_entered:
+            if (x < slider_square_x.real_value - 50 or x > slider_square_x.real_value + 50) or (y < slider_square_y.real_value - 50 or y > slider_square_y.real_value + 50):
+                square_entered = False
+                square_exited = True
+                laser_color = 'blue'
+                
+        if not refraction:
+            x += x_laser_increment
+            y += y_laser_increment
+        
+        if square_entered and refraction:
+            x += x_increment_in
+            y += y_increment_in
+ 
+        if square_exited and refraction:
+            x += x_increment_out
+            y += y_increment_out
 
         else:
-            y += y_laser_increment
             x += x_laser_increment
+            y += y_laser_increment
+
+
+        pygame.draw.line(screen, laser_color, (x, y), (x + 1, y), 5)
 
 
 done = False
