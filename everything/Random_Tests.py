@@ -98,13 +98,13 @@ class Button:
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
 
-slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0.05, 1, 2, None, 2)
-slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0.05, 1, 2, None, 2)
+slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0.05, 1, 5, None, 2)
+slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0.05, 1, 5, None, 2)
 slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10, 0, 1, 2, None, 180)
 slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0, None, screen_width)
 slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95), 0, 1, 0, None , screen_height)
 slider_laser_pos = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0, None, screen_height)
-slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0.01, 0.99, 4, None, math.pi)
+slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0.01, 0.99, 5, None, math.pi)
 reset_button = Button("Reset Sliders", screen_width // 1.25 - 150 // 1.25, screen_height // (100/94) - 50 // (100/94), 150, 50)
 
 all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle
@@ -165,8 +165,8 @@ def Square_function():
     angle_of_refraction_in = 0
     up_face_touched = False
 
-    x_laser_increment = round(math.cos(slider_laser_angle.real_value), 2)
-    y_laser_increment = -round(math.sin(slider_laser_angle.real_value), 2)
+    x_laser_increment = round(math.cos(slider_laser_angle.real_value), 5)
+    y_laser_increment = -round(math.sin(slider_laser_angle.real_value), 5)
 
     while(x < screen_width):
 
@@ -177,16 +177,16 @@ def Square_function():
             
             angle_of_refraction_in = math.asin(pre_calculation_in)
             
-            x_increment_in = round(math.cos(angle_of_refraction_in), 2)
-            y_increment_in = -round(math.sin(angle_of_refraction_in), 2)
+            x_increment_in = round(math.cos(angle_of_refraction_in), 5)
+            y_increment_in = -round(math.sin(angle_of_refraction_in), 5)
 
         pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value)
         if -1 <= pre_calculation_out <= 1:
             
             angle_of_refraction_out = math.asin(pre_calculation_in)
             
-            x_increment_out = round(math.cos(angle_of_refraction_out), 2)
-            y_increment_out = -round(math.sin(angle_of_refraction_out), 2)
+            x_increment_out = round(math.cos(angle_of_refraction_out), 5)
+            y_increment_out = -round(math.sin(angle_of_refraction_out), 5)
 
 
         if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0:
@@ -194,9 +194,13 @@ def Square_function():
         
         if round(y, 0)+-1 == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction:
             up_face_touched = True
-            x_increment_in = 90 - x_increment_in
-            y_increment_in = 90 - y_increment_in
-            print('great success')
+            x_increment_in = round(math.cos(math.pi/2 - angle_of_refraction_in), 5)
+            y_increment_in = -round(math.sin(math.pi/2 - angle_of_refraction_in), 5)
+        
+        if round(y, 0)+-1 == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction:
+            up_face_touched = True
+            x_increment_in = round(math.cos(math.pi/2 - angle_of_refraction_in), 5)
+            y_increment_in = -round(math.sin(math.pi/2 - angle_of_refraction_in), 5)
         
         if (slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50) and (slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50):
             square_entered = True
