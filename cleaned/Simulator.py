@@ -194,12 +194,13 @@ def Square_function():
             y_increment_out = -round(math.sin(angle_of_refraction_out), 5)
 
 
-        if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0:
+        if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0: #checks if there is a refraction
             refraction = True
         
         if round(y, 0)+-1 == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if up face is touched
             x_increment_in = round(math.cos(math.pi/2 - angle_of_refraction_in), 5)
             y_increment_in = -round(math.sin(math.pi/2 - angle_of_refraction_in), 5)
+
         
         if round(y, 0)+-1 == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if down face if touched
             x_increment_in = round(math.cos(math.pi/2 - angle_of_refraction_in), 5)
@@ -210,7 +211,7 @@ def Square_function():
             #laser_color = 'green'
 
         if square_entered:
-            if (x < slider_square_x.real_value - 50 or x > slider_square_x.real_value + 50) or (y < slider_square_y.real_value - 50 or y > slider_square_y.real_value + 50):
+            if (x < slider_square_x.real_value - 50 or x > slider_square_x.real_value + 50) or (y < slider_square_y.real_value - 50 or y > slider_square_y.real_value + 50): #checks if laser exited
                 square_entered = False
                 square_exited = True
                 #laser_color = 'blue'
@@ -256,7 +257,6 @@ while not done:
                     slider_RI2.value = 0.755
                     slider_laser_angle.value = 0.32
                     slider_laser_pos.value = 0.085
-                    print('clicked')
 
         elif event.type == pygame.MOUSEBUTTONUP:
             for slider in all_sliders:
