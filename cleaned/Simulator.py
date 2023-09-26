@@ -177,38 +177,36 @@ def Square_function():
 
     while(x < screen_width):
 
-        #print(x_increment_in, y_increment_in)
-
-        pre_calculation_in = (slider_RI1.real_value * math.sin(slider_laser_angle.real_value) / slider_RI2.real_value)
+        pre_calculation_in = (slider_RI1.real_value * math.sin(slider_laser_angle.real_value) / slider_RI2.real_value) #starts the refraction calculus from out to in
         if -1 <= pre_calculation_in <= 1:
             
-            angle_of_refraction_in = math.asin(pre_calculation_in)
+            angle_of_refraction_in = math.asin(pre_calculation_in) #ends the refraction calculus only if there's no reflexion
             
-            x_increment_in = round(math.cos(angle_of_refraction_in), 5)
-            y_increment_in = -round(math.sin(angle_of_refraction_in), 5)
+            x_increment_in = round(math.cos(angle_of_refraction_in), 5) #finds the increments to render an angle
+            y_increment_in = -round(math.sin(angle_of_refraction_in), 5) 
 
-        pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value)
+        pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value) #starts the refraction calculus from in to out
         if -1 <= pre_calculation_out <= 1:
             
-            angle_of_refraction_out = math.asin(pre_calculation_out)
+            angle_of_refraction_out = math.asin(pre_calculation_out) #ends the refraction calculus only if there's no reflexion
             
-            x_increment_out = round(math.cos(angle_of_refraction_out), 5)
+            x_increment_out = round(math.cos(angle_of_refraction_out), 5)  #finds the increments to render an angle
             y_increment_out = -round(math.sin(angle_of_refraction_out), 5)
 
 
         if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0: #checks if there is a refraction
             refraction = True
         
-        if round(y, 0) == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if up face is touched
+        if round(y, 0) == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if up face is touched and adapts the angle
             x_increment_in = round(math.cos(math.pi/2 - angle_of_refraction_in), 5)
             y_increment_in = -round(math.sin(math.pi/2 - angle_of_refraction_in), 5)
 
         
-        if round(y, 0) == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if down face if touched
+        if round(y, 0) == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if down face if touched and adapts the angle
             x_increment_in = round(math.cos(math.pi/2 - angle_of_refraction_in), 5)
             y_increment_in = -round(math.sin(math.pi/2 - angle_of_refraction_in), 5)
         
-        if (slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50) and (slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50):
+        if (slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50) and (slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50): #checks if we are inside of square
             square_entered = True
             #laser_color = 'green'
 
@@ -218,7 +216,7 @@ def Square_function():
                 square_exited = True
                 #laser_color = 'blue'
                 
-        if not refraction:
+        if not refraction: #this adjusts every increment (angle) depending on the situation
             x += x_laser_increment
             y += y_laser_increment
         
@@ -234,11 +232,11 @@ def Square_function():
             x += x_laser_increment
             y += y_laser_increment
 
-        if refraction and square_entered:
+        if refraction and square_entered: #prints the angle of refraction if there is one
             angle_of_refraction_in_header = Smallfont.render(str(round(math.degrees(angle_of_refraction_in), 2)), True, white)
             screen.blit(angle_of_refraction_in_header, (screen_width // 2 - 20, screen_height // 10))
         
-        angle_of_refraction_in_text = Smallfont.render('Angle de réfraction', True, white)
+        angle_of_refraction_in_text = Smallfont.render('Angle de réfraction', True, white) #prints the angle of refraction text
         screen.blit(angle_of_refraction_in_text, (screen_width // 2 - 70, screen_height // 20))
         pygame.draw.line(screen, laser_color, (x, y), (x + 1, y), 5)
 
