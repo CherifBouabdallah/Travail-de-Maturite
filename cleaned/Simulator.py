@@ -285,6 +285,7 @@ pygame.quit()
 
 # the transparent square
 # the transparent triangle
+# add headers
 
 # DONE :
 
