@@ -162,7 +162,6 @@ def Square_function():
     refraction = None
     square_entered = False
     square_exited =  False
-    backround_color = black
 
     pygame.draw.rect(screen, square_color, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
     pygame.draw.rect(screen, colors(slider_RI2.real_value), [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
@@ -170,7 +169,6 @@ def Square_function():
     x_increment_in = 0
     y_increment_in = 0
     angle_of_refraction_in = 0
-    up_face_touched = False
 
     x_laser_increment = round(math.cos(slider_laser_angle.real_value), 5)
     y_laser_increment = -round(math.sin(slider_laser_angle.real_value), 5)
