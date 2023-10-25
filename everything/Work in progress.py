@@ -16,12 +16,14 @@ gray = (60, 60, 60)
 Bigfont = pygame.font.SysFont("Calibri", 72)
 font = pygame.font.SysFont("Calibri", 52)
 Smallfont = pygame.font.SysFont("Calibri", 22)
+minifont = pygame.font.SysFont("Calibri", 16)
 
 slider_width = 200
 slider_height = 20
 mouse_x = 0
 mouse_y = 0
-refraction = None
+angle_of_refraction_in_header = 0
+
 
 
 class Slider:
@@ -80,87 +82,41 @@ class Slider:
         screen.blit(self.header, (screen_width // align_x - self.header.get_width() // align_x, screen_height // align_y - self.header.get_height() // align_y))
 
 class Button:
-    def __init__(self, text, pos_x, pos_y, width, height):
+    def __init__(self, text, pos_x, pos_y, width, height, font_size):
         self.text = text
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.width = width
         self.height = height
         self.rect = pygame.Rect(pos_x, pos_y, width, height)
+        self.font_size = font_size
     
     def is_clicked(self, mouse_pos):
         return self.rect.collidepoint(mouse_pos)
     
     def draw(self):
         pygame.draw.rect(screen, gray, self.rect)
-        font = pygame.font.SysFont("Calibri", 28)
+        font = pygame.font.SysFont("Calibri", self.font_size)
         text_surface = font.render(self.text, True, black)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
 
-slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0.05, 1, 2, None, 2)
-slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0.05, 1, 2, None, 2)
-slider_angle = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // 10 - slider_height // 10, 0, 1, 2, None, 180)
+slider_RI1 = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0.05, 1, 5, None, 2)
+slider_RI2 = Slider(0.5, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0.05, 1, 5, None, 2)
 slider_square_x = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0, None, screen_width)
 slider_square_y = Slider(0.5, screen_width // 2 - slider_width // 2, screen_height // (100/95) - slider_height // (100/95), 0, 1, 0, None , screen_height)
 slider_laser_pos = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (10/9) - slider_height // (10/9), 0, 1, 0, None, screen_height)
-slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0.01, 0.99, 2, None, 180)
-reset_button = Button("Reset Sliders", screen_width // 1.25 - 150 // 1.25, screen_height // (100/94) - 50 // (100/94), 150, 50)
+slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0.01, 0.99, 5, None, math.pi)
+all_sliders = slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle
 
-all_sliders = slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle
 
-def Square_function():
-    x = 25
-    y = slider_laser_pos.real_value
-    square_entered = False
-    square_first_face_touched = False
+reset_button = Button("Reset Sliders", screen_width // 1.25 - 150 // 1.25, screen_height // (100/94) - 50 // (100/94), 150, 50, 28)
+preset1_button = Button("Air to Glass", screen_width // 1.05 - 75 // 1.05, screen_height // (100/94) - 50 // (100/94), 75, 50, 12)
 
-    pygame.draw.rect(screen, white, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
-    pygame.draw.rect(screen, black, [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
-    x_increment_in = 0
-    y_increment_in = 0
-    angle_of_refraction_degrees_in = 0
 
-    x_laser_increment = round(math.sin(math.radians(slider_laser_angle.real_value)), 2)
-    y_laser_increment = round(math.cos(math.radians(slider_laser_angle.real_value)), 2)
 
-    if slider_RI1.real_value == slider_RI2.real_value or slider_laser_angle.real_value == 90:
-        y_increment_in = 0
 
-    else:
-        pre_calculation_in = (slider_RI1.real_value * math.sin(math.radians(slider_laser_angle.real_value-90)) / slider_RI2.real_value)
-
-        if -1 <= pre_calculation_in <= 1 and math.degrees(math.asin(pre_calculation_in)) != 0:
-            angle_of_refraction_degrees_in = math.degrees(math.asin(pre_calculation_in))
-            x_increment_in = round(math.sin(math.radians(angle_of_refraction_degrees_in)), 2)
-            y_increment_in = round(math.cos(math.radians(angle_of_refraction_degrees_in)), 2)
-
-    while(x < screen_width):
-
-        #print(y_laser_increment, y_increment_in, angle_of_refraction_degrees_in)
-
-        if slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50:
-            square_entered = True
-
-        if round(x, 0)+-1 <= slider_square_x.real_value - 50 and slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50 and not square_first_face_touched and square_entered and slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 90:
-            square_first_face_touched = True
-            y = y + y_increment_in - 1
-            x = x + x_increment_in
-
-        if square_first_face_touched:
-            y = y + y_increment_in - 1
-            x = x + x_increment_in
-
-        pygame.draw.line(screen, 'red', (x, y), (x + 1, y), 5)
-        
-        if square_entered and slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 90:
-            y = y + 0
-            x = x + 0
-        else:
-            y = y + y_laser_increment
-            x = x + x_laser_increment
-
-def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle):
+def Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle):
     slider_RI1.calculation_value(0)
     slider_RI1.render_header(str(slider_RI1.real_value))
     slider_RI1.draw_slider()
@@ -170,11 +126,6 @@ def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider
     slider_RI2.render_header(str(slider_RI2.real_value))
     slider_RI2.draw_slider()
     slider_RI2.blit_header(1.3, 10)
-    
-    slider_angle.calculation_value(0)
-    slider_angle.render_header(str(slider_angle.real_value))
-    slider_angle.draw_slider()
-    slider_angle.blit_header(2, 10)
 
     slider_square_x.calculation_value(0)
     slider_square_x.render_header(str(slider_square_x.real_value))
@@ -191,10 +142,127 @@ def Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider
     slider_laser_x.draw_slider()
     slider_laser_x.blit_header(4.45, 1.11)
 
-    slider_laser_angle.calculation_value(0)
-    slider_laser_angle.render_header(str(round(slider_laser_angle.real_value - 90, 0)))
+    slider_laser_angle.calculation_value(-math.pi/2)
+    slider_laser_angle.render_header(str(round(math.degrees(slider_laser_angle.real_value), 0)))
     slider_laser_angle.draw_slider()
     slider_laser_angle.blit_header(4.45, 1.05)
+
+def colors(slider = 1):
+    if slider is None or slider < 1:
+        color = (0, 0, 0)
+    else:
+        color = ((slider-1)*30, (slider-1)*30, (slider-1)*30)
+    return color
+
+def Square_function():
+    x = 25
+    y = slider_laser_pos.real_value
+    laser_color = 'red'
+    square_color = white
+    refraction = None
+    square_entered = False
+    square_exited =  False
+    up_face_touched = False
+    down_face_touched = False
+
+    pygame.draw.rect(screen, square_color, [slider_square_x.real_value - 50, slider_square_y.real_value - 50, 100, 100])
+    pygame.draw.rect(screen, colors(slider_RI2.real_value), [slider_square_x.real_value - 45, slider_square_y.real_value - 45, 90, 90])
+
+    x_increment_in = 0
+    y_increment_in = 0
+    x_increment_out = 0
+    y_increment_out = 0
+    angle_of_refraction_in = 0
+    angle_of_refraction_out = 0
+
+    x_laser_increment = round(math.cos(slider_laser_angle.real_value), 5)
+    y_laser_increment = -round(math.sin(slider_laser_angle.real_value), 5)
+
+    while(x < screen_width):
+
+
+        pre_calculation_in = (slider_RI1.real_value * math.sin(slider_laser_angle.real_value) / slider_RI2.real_value) #starts the refraction calculus from out to in
+        
+        if -1 <= pre_calculation_in <= 1:
+            
+            angle_of_refraction_in = math.asin(pre_calculation_in) #ends the refraction calculus only if there's no reflexion
+
+            if round(y, 0) == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if up face is touched and adapts the angle
+
+                angle_of_refraction_in = math.asin(slider_RI1.real_value * math.sin(math.pi - slider_laser_angle.real_value) / slider_RI2.real_value)
+
+                x_increment_in = round(math.sin(angle_of_refraction_in), 5)
+                y_increment_in = -round(math.cos(angle_of_refraction_in), 5)
+                up_face_touched = True
+                laser_color = 'green'
+
+            if not up_face_touched or square_entered: 
+                x_increment_in = round(math.cos(angle_of_refraction_in), 5) #finds the increments to render an angle if everything is normal
+                y_increment_in = -round(math.sin(angle_of_refraction_in), 5)
+
+
+        pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value) #starts the refraction calculus from in to out
+        
+        if -1 <= pre_calculation_out <= 1:
+            
+            angle_of_refraction_out = math.asin(pre_calculation_out) #
+
+            if round(y, 0) == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if down face if touched and adapts the angle
+                
+                angle_of_refraction_out = math.asin(slider_RI2.real_value * math.sin(math.pi - angle_of_refraction_in) / slider_RI1.real_value) #ends the refraction calculus only if there's no reflexion
+                
+                x_increment_in = round(math.sin(angle_of_refraction_out), 5)
+                y_increment_in = -round(math.cos(angle_of_refraction_out), 5)
+                down_face_touched = True
+                laser_color = 'blue'
+
+            if not down_face_touched or square_exited: 
+                x_increment_out = round(math.cos(angle_of_refraction_out), 5)  #finds the increments to render an angle
+                y_increment_out = -round(math.sin(angle_of_refraction_out), 5)
+                
+
+        if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0: #checks if there is a refraction
+            refraction = True
+
+        if (slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50) and (slider_square_y.real_value - 50 <= y <= slider_square_y.real_value + 50): #checks if we are inside of square
+            square_entered = True
+            #laser_color = 'green'
+
+        if square_entered:
+            if (x < slider_square_x.real_value - 50 or x > slider_square_x.real_value + 50) or (y < slider_square_y.real_value - 50 or y > slider_square_y.real_value + 50): #checks if laser exited
+                square_entered = False
+                square_exited = True
+                #laser_color = 'blue'
+                
+        if not refraction: #this adjusts every increment (angle) depending on the situation
+            x += x_laser_increment
+            y += y_laser_increment
+        
+        if square_entered and refraction:
+            x += x_increment_in
+            y += y_increment_in
+ 
+        if square_exited and refraction:
+            x += x_increment_out
+            y += y_increment_out
+
+        else:
+            x += x_laser_increment
+            y += y_laser_increment
+
+        if up_face_touched and square_exited:
+            up_face_touched = False
+
+        if down_face_touched and square_exited:
+            down_face_touched = False
+
+        if refraction and square_entered: #prints the angle of refraction if there is one
+            angle_of_refraction_in_header = Smallfont.render(str(round(math.degrees(angle_of_refraction_in), 2)), True, white)
+            screen.blit(angle_of_refraction_in_header, (screen_width // 2 - 20, screen_height // 10))
+        
+        angle_of_refraction_in_text = Smallfont.render('Angle de réfraction', True, white) #prints the angle of refraction text
+        screen.blit(angle_of_refraction_in_text, (screen_width // 2 - 70, screen_height // 20))
+        pygame.draw.line(screen, laser_color, (x, y), (x + 1, y), 5)
 
 
 done = False
@@ -205,40 +273,55 @@ while not done:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
-                slider_RI1.update_grabbed(event, mouse_x, mouse_y)
-                slider_RI2.update_grabbed(event, mouse_x, mouse_y)
-                slider_angle.update_grabbed(event, mouse_x, mouse_y)
-                slider_square_x.update_grabbed(event, mouse_x, mouse_y)
-                slider_square_y.update_grabbed(event, mouse_x, mouse_y)
-                slider_laser_pos.update_grabbed(event, mouse_x, mouse_y)
-                slider_laser_angle.update_grabbed(event, mouse_x, mouse_y)
+                for slider in all_sliders:
+                    slider.update_grabbed(event, mouse_x, mouse_y)
+
                 if reset_button.is_clicked((mouse_x, mouse_y)):    
                     for slider in all_sliders:
                         slider.value = 0.5
 
+                if preset1_button.is_clicked((mouse_x, mouse_y)):    
+                    for slider in all_sliders:
+                        slider.value = 0.5
+                    slider_RI2.value = 0.755
+                    slider_laser_angle.value = 0.32
+                    slider_laser_pos.value = 0.085
+
         elif event.type == pygame.MOUSEBUTTONUP:
-            slider_RI1.update_released(event)
-            slider_RI2.update_released(event)
-            slider_angle.update_released(event)
-            slider_square_x.update_released(event)
-            slider_square_y.update_released(event)
-            slider_laser_pos.update_released(event)
-            slider_laser_angle.update_released(event)
+            for slider in all_sliders:
+                slider.update_released(event)
 
         elif event.type == pygame.MOUSEMOTION:
-            slider_RI1.update_motion(event, mouse_x)
-            slider_RI2.update_motion(event, mouse_x)
-            slider_angle.update_motion(event, mouse_x)
-            slider_square_x.update_motion(event, mouse_x)
-            slider_square_y.update_motion(event, mouse_x)
-            slider_laser_pos.update_motion(event, mouse_x)
-            slider_laser_angle.update_motion(event, mouse_x)
+            for slider in all_sliders:
+                slider.update_motion(event, mouse_x)
 
-    screen.fill(black)
-    Slider_printer(slider_RI1, slider_RI2, slider_angle, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle)
+    screen.fill(colors(slider_RI1.real_value))
+    Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle)
     Square_function()
     reset_button.draw()
+    preset1_button.draw()
     pygame.display.update()
     pygame.time.Clock().tick(60)
     
 pygame.quit()
+
+# TO ADD : 
+
+# the transparent square
+# the transparent triangle
+# add headers
+
+# DONE :
+
+# a button to set IR to water, glass etc.
+# optimization
+# the laser movement
+# A window with the output angle
+# In case of a reflexion !
+# # add comas
+# go from tkiner to pygame
+# show RI and Angle on screen
+# A slider to choose angle and RI
+# remove the prompt to ask for angles
+# fix crash !
+# # a reset button
