@@ -194,27 +194,39 @@ def Square_function():
                 x_increment_in = round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = round(math.cos(angle_of_refraction_in), 5)
                 up_face_touched = True
-                laser_color = 'green'
 
             if up_face_touched:
                 x_increment_in = round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = round(math.cos(angle_of_refraction_in), 5)
-                laser_color = 'purple'   
+                #laser_color = 'purple'   
 
             if refraction and not up_face_touched and square_entered: 
                 x_increment_in = round(math.cos(angle_of_refraction_in), 5) #finds the increments to render an angle if everything is normal
                 y_increment_in = -round(math.sin(angle_of_refraction_in), 5)
-                laser_color = 'white'
+                #laser_color = 'white'
 
-
+        
         pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value) #starts the refraction calculus from in to out
+
         if -1 <= pre_calculation_out <= 1:
-            
+
             angle_of_refraction_out = math.asin(pre_calculation_out) #ends the refraction calculus only if there's no reflexion
             
-            x_increment_out = round(math.cos(angle_of_refraction_out), 5)  #finds the increments to render an angle
-            y_increment_out = -round(math.sin(angle_of_refraction_out), 5)
+            if round(y, 0) == slider_square_y.real_value + 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if down face if touched and adapts the angle
                 
+                x_increment_out = round(math.sin(angle_of_refraction_out), 5)
+                y_increment_out = round(math.cos(angle_of_refraction_out), 5)
+                down_face_touched = False
+            
+            if down_face_touched:
+                x_increment_out = round(math.sin(angle_of_refraction_out), 5)
+                y_increment_out = round(math.cos(angle_of_refraction_out), 5)
+
+            if refraction and not down_face_touched and square_exited: 
+                x_increment_out = round(math.cos(angle_of_refraction_out), 5) #finds the increments to render an angle if everything is normal
+                y_increment_out = -round(math.sin(angle_of_refraction_out), 5)
+
+            
 
         if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0: #checks if there is a refraction
             refraction = True
