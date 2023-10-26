@@ -174,6 +174,7 @@ def Square_function():
     y_increment_out = 0
     angle_of_refraction_in = 0
     angle_of_refraction_out = 0
+    angle_of_refraction_in_num = 0
 
     x_laser_increment = round(math.cos(slider_laser_angle.real_value), 5)
     y_laser_increment = -round(math.sin(slider_laser_angle.real_value), 5)
@@ -186,10 +187,12 @@ def Square_function():
         if -1 <= pre_calculation_in <= 1:
             
             angle_of_refraction_in = math.asin(pre_calculation_in) #ends the refraction calculus only if there's no reflexion
-
+            angle_of_refraction_in_num = math.asin(pre_calculation_in)
+            
             if round(y, 0) == slider_square_y.real_value - 50 and slider_square_x.real_value - 50 <= x <= slider_square_x.real_value + 50 and refraction: #checks if up face is touched and adapts the angle
 
                 angle_of_refraction_in = math.asin(slider_RI1.real_value * math.sin(math.pi - slider_laser_angle.real_value) / slider_RI2.real_value)
+                angle_of_refraction_in_num = math.asin(slider_RI1.real_value * math.sin(math.pi - slider_laser_angle.real_value) / slider_RI2.real_value)
 
                 x_increment_in = round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = round(math.cos(angle_of_refraction_in), 5)
@@ -264,10 +267,10 @@ def Square_function():
             down_face_touched = False
 
         if refraction and square_entered: #prints the angle of refraction if there is one
-            angle_of_refraction_in_header = Smallfont.render(str(round(math.degrees(angle_of_refraction_in), 2)), True, white)
+            angle_of_refraction_in_header = Smallfont.render(str(round(math.degrees(angle_of_refraction_in_num), 2)), True, white)
             screen.blit(angle_of_refraction_in_header, (screen_width // 2 - 20, screen_height // 10))
         
-        angle_of_refraction_in_text = Smallfont.render('Angle de réfraction', True, white) #prints the angle of refraction text
+        angle_of_refraction_in_text = Smallfont.render('Angle de réfraction première collision uniquement', True, white) #prints the angle of refraction text
         screen.blit(angle_of_refraction_in_text, (screen_width // 2 - 70, screen_height // 20))
         pygame.draw.line(screen, laser_color, (x, y), (x + 1, y), 5)
 
