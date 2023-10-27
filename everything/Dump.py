@@ -159,6 +159,8 @@ def Square_function():
     square_exited =  False
     up_face_touched = False
     down_face_touched = False
+    up_face_touched_out = False
+    down_face_touched_out = False
 
     pygame.draw.rect(screen, square_color, [slider_square_x.real_value - 75, slider_square_y.real_value - 75, 150, 150])
     pygame.draw.rect(screen, colors(slider_RI2.real_value), [slider_square_x.real_value - 70, slider_square_y.real_value - 70, 140, 140])
@@ -169,6 +171,7 @@ def Square_function():
     y_increment_out = 0
     angle_of_refraction_in = 0
     angle_of_refraction_out = 0
+    
 
     x_laser_increment = round(math.cos(slider_laser_angle.real_value), 5)
     y_laser_increment = round(math.sin(slider_laser_angle.real_value), 5)
@@ -177,7 +180,8 @@ def Square_function():
 
 
         pre_calculation_in = (slider_RI1.real_value * math.sin(slider_laser_angle.real_value) / slider_RI2.real_value) #starts the refraction calculus from out to in
-        
+
+
         if -1 <= pre_calculation_in <= 1:
             
             angle_of_refraction_in = math.asin(pre_calculation_in) #ends the refraction calculus only if there's no reflexion
@@ -191,8 +195,8 @@ def Square_function():
             if up_face_touched:
                 x_increment_in = round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = round(math.cos(angle_of_refraction_in), 5)
-                print('over')
 
+        
             if round(y, 0) == slider_square_y.real_value + 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and not up_face_touched and not down_face_touched: #checks if down face if touched and adapts the angle
                 x_increment_in = -round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = -round(math.cos(angle_of_refraction_in), 5)
@@ -201,25 +205,47 @@ def Square_function():
             if down_face_touched:
                 x_increment_in = -round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = -round(math.cos(angle_of_refraction_in), 5)
-                print('under')   
 
-
-            if refraction and not up_face_touched and not down_face_touched and square_entered: #finds the increments to render an angle if everything is normal
+            else: #finds the increments to render an angle if everything is normal
                 x_increment_in = round(math.cos(angle_of_refraction_in), 5) 
                 y_increment_in = round(math.sin(angle_of_refraction_in), 5)
-                print('ye')
 
 
-        
         pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value) #starts the refraction calculus from in to out
 
         if -1 <= pre_calculation_out <= 1:
 
             angle_of_refraction_out = math.asin(pre_calculation_out) #ends the refraction calculus only if there's no reflexion
             
-            if square_exited:
-                x_increment_out = round(math.cos(angle_of_refraction_out), 5) #finds the increments to render an angle if everything is normal
-                y_increment_out = round(math.sin(angle_of_refraction_out), 5) #finds the increments to render an angle if everything is normal
+
+            x_increment_out = round(math.cos(angle_of_refraction_out), 5) #finds the increments to render an angle if everything is normal
+            y_increment_out = round(math.sin(angle_of_refraction_out), 5) #finds the increments to render an angle if everything is normal
+
+            if round(y, 0) == slider_square_y.real_value - 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and square_entered: #checks if up face is touched and adapts the angle
+
+                x_increment_out = -round(math.sin(angle_of_refraction_out), 5)
+                y_increment_out = round(math.cos(angle_of_refraction_out), 5)
+                up_face_touched_out = True
+                print('up face touched')
+            
+            if up_face_touched_out:
+                x_increment_out = -round(math.sin(angle_of_refraction_out), 5)
+                y_increment_out = round(math.cos(angle_of_refraction_out), 5)
+                print('up face touched')
+
+            if round(y, 0) == slider_square_y.real_value + 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and square_entered: #checks if down face if touched and adapts the angle
+
+                x_increment_out = round(math.sin(angle_of_refraction_out), 5)
+                y_increment_out = -round(math.cos(angle_of_refraction_out), 5)
+                down_face_touched_out = True
+                print('down face touched')
+            
+            if down_face_touched_out:
+                x_increment_out = round(math.sin(angle_of_refraction_out), 5)
+                y_increment_out = -round(math.cos(angle_of_refraction_out), 5)
+                print('down face touched')
+
+                
 
             
 
@@ -228,13 +254,12 @@ def Square_function():
 
         if (slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75) and (slider_square_y.real_value - 75 <= y <= slider_square_y.real_value + 75): #checks if we are inside of square
             square_entered = True
-            #laser_color = 'green'
+
 
         if square_entered:
             if (x < slider_square_x.real_value - 75 or x > slider_square_x.real_value + 75) or (y < slider_square_y.real_value - 75 or y > slider_square_y.real_value + 75): #checks if laser exited
                 square_entered = False
                 square_exited = True
-                #laser_color = 'blue'
                 
         if not refraction: #this adjusts every increment (angle) depending on the situation
             x += x_laser_increment
@@ -243,8 +268,7 @@ def Square_function():
         if square_entered and refraction:
             x += x_increment_in
             y += y_increment_in
-            print('we in')
- 
+        
         if square_exited and refraction:
             x += x_increment_out
             y += y_increment_out
@@ -333,3 +357,4 @@ pygame.quit()
 # remove the prompt to ask for angles
 # fix crash !
 # # a reset button
+
