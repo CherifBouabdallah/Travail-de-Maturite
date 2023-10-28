@@ -79,6 +79,11 @@ class Slider:
         header_y = self.pos_y - self.header.get_height()  # Adjust the vertical position as needed
         screen.blit(self.header, (header_x, header_y))
 
+    def blit_text(self, text, offset = -45): #this function is used to print the name of the slider
+        self.text = Smallfont.render(text, True, white)
+        screen.blit(self.text, (self.pos_x, self.pos_y + offset))
+
+
 
 
 #creation of the buttons by defining a class
@@ -114,42 +119,41 @@ slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_h
 all_sliders = slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle
 
 reset_button = Button("Reset Sliders", screen_width // 1.25 - 150 // 1.25, screen_height // (100/94) - 50 // (100/94), 150, 50, 28)
-preset1_button = Button("Air to Glass", screen_width // 1.05 - 75 // 1.05, screen_height // (100/94) - 50 // (100/94), 75, 50, 12)
+preset1_button = Button("Air to Glass", screen_width // 1.1 - 75 // 1.1, screen_height // (100/94) - 50 // (100/94), 150, 50, 28)
 
 
 
 
-def Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle): #function that creates the different sliders with the functions created before
+def Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle): #function that creates the different sliders with the functions created before
     slider_RI1.calculation_value(1)
     slider_RI1.render_header(str(slider_RI1.real_value))
     slider_RI1.draw_slider()
-    slider_RI1.blit_header(4.45, 10)
+    slider_RI1.blit_text('    Refraction Index 1')
 
     slider_RI2.calculation_value(1)
     slider_RI2.render_header(str(slider_RI2.real_value))
     slider_RI2.draw_slider()
-    slider_RI2.blit_header(1.3, 10)
+    slider_RI2.blit_text('    Refraction Index 2')
 
     slider_square_x.calculation_value(0)
     slider_square_x.render_header(str(slider_square_x.real_value))
     slider_square_x.draw_slider()
-    slider_square_x.blit_header(2, 1.11)
+    slider_square_x.blit_text(' Square position axis x')
 
     slider_square_y.calculation_value(0)
     slider_square_y.render_header(str(slider_square_y.real_value))
     slider_square_y.draw_slider()
-    slider_square_y.blit_header(2, 1.05)
+    slider_square_y.blit_text(' Square position axis y', 25)
 
-    slider_laser_x.calculation_value(0)
-    slider_laser_x.render_header(str(slider_laser_x.real_value))
-    slider_laser_x.draw_slider()
-    slider_laser_x.blit_header(4.45, 1.11)
+    slider_laser_pos.calculation_value(0)
+    slider_laser_pos.render_header(str(slider_laser_pos.real_value))
+    slider_laser_pos.draw_slider()
+    slider_laser_pos.blit_text('  Laser position axis y')
 
     slider_laser_angle.calculation_value(-math.pi/2)
     slider_laser_angle.render_header(str(round(math.degrees(slider_laser_angle.real_value), 0)))
     slider_laser_angle.draw_slider()
-    slider_laser_angle.blit_header(4.45, 1.05)
-
+    slider_laser_angle.blit_text('          Laser angle', 25)
 
 
 def colors(slider = 1): #function that creates the different colors depending on the refraction index

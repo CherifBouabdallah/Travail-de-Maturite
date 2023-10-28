@@ -1,7 +1,7 @@
 import pygame
 import math
-#from MyFunctions import * #the "*" imports all functions !
 
+#Definition of the window + initialization of pygame
 pygame.init()
 caption = "Refraction Simulator"
 screen_width, screen_height = 1400, 980
@@ -18,6 +18,7 @@ font = pygame.font.SysFont("Calibri", 52)
 Smallfont = pygame.font.SysFont("Calibri", 22)
 minifont = pygame.font.SysFont("Calibri", 16)
 
+#Definition of variables
 slider_width = 200
 slider_height = 20
 mouse_x = 0
@@ -25,8 +26,9 @@ mouse_y = 0
 angle_of_refraction_in_header = 0
 
 
-
+# creation of the sliders by defining a class
 class Slider:
+    #Definition of the sliders attributes
     def __init__(self, value, pos_x, pos_y, min_value, max_value, round, real_value, multiplyer):
         self.value = value
         self.grabbed = False
@@ -45,39 +47,48 @@ class Slider:
         self.real_value = real_value
         self.multiplyer = multiplyer
 
+    #definition of the sliders multiples functions
     def update_grabbed(self, event, mouse_x, mouse_y):
         mouse_x, mouse_y = event.pos
         if self.pos_x <= mouse_x <= self.pos_x + self.width and self.pos_y <= mouse_y <= self.pos_y + self.height:
             self.grabbed = True
 
-    def update_released(self, event):
+    def update_released(self, event): #this function is used to stop the slider from moving when the mouse is released
         if event.button == 1:
             self.grabbed = False
 
-    def update_motion(self, event, mouse_x):
+    def update_motion(self, event, mouse_x): #this function is used to move the slider
         if self.grabbed:
             mouse_x, _ = event.pos
             self.value = (mouse_x - self.pos_x) / self.width
             self.value = max(self.min_value, min(self.value, self.max_value))
 
-    def calculation_value(self, addon):
+    def calculation_value(self, addon): #this function is used to calculate the real value of the slider (the default value is between 0 and 1)
         self.real_value = round(self.value * self.multiplyer + addon, self.round)
         self.neg_value = -round(self.value * self.multiplyer + addon, self.round)
     
-    def draw_slider(self):
+    def draw_slider(self): #this function is used to draw the slider
         pygame.draw.rect(screen, gray, [self.pos_x, self.pos_y, self.width, self.height])
         pygame.draw.rect(screen, white, [self.pos_x + self.value * self.width - 5, self.pos_y, 10, self.height])
 
-    def render_header(self, header):
+    def render_header(self, header): #this function is used to render the header of the slider
         self.header = Smallfont.render(header, True, white)
 
-    def blit_header(self, align_x, align_y):
+    def blit_header(self, align_x, align_y): #this function is used to print the header of the slider
         header_x = self.pos_x + self.value * self.width - self.header.get_width() // 2
         header_y = self.pos_y - self.header.get_height()  # Adjust the vertical position as needed
         screen.blit(self.header, (header_x, header_y))
 
+    def blit_text(self, text, offset = -45): #this function is used to print the name of the slider
+        self.text = Smallfont.render(text, True, white)
+        screen.blit(self.text, (self.pos_x, self.pos_y + offset))
+
+
+
+
+#creation of the buttons by defining a class
 class Button:
-    def __init__(self, text, pos_x, pos_y, width, height, font_size):
+    def __init__(self, text, pos_x, pos_y, width, height, font_size): #definition of the buttons attributes
         self.text = text
         self.pos_x = pos_x
         self.pos_y = pos_y
@@ -86,15 +97,18 @@ class Button:
         self.rect = pygame.Rect(pos_x, pos_y, width, height)
         self.font_size = font_size
     
-    def is_clicked(self, mouse_pos):
+    def is_clicked(self, mouse_pos):  #this function is used to check if the button is clicked
         return self.rect.collidepoint(mouse_pos)
     
-    def draw(self):
+    def draw(self): #this function is used to draw the button
         pygame.draw.rect(screen, gray, self.rect)
         font = pygame.font.SysFont("Calibri", self.font_size)
         text_surface = font.render(self.text, True, black)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
+
+
+#creation of the sliders and buttons
 
 slider_RI1 = Slider(0, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0, 1, 5, None, 1)
 slider_RI2 = Slider(0, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0, 1, 5, None, 1)
@@ -104,52 +118,52 @@ slider_laser_pos = Slider(0.5, screen_width // 6 - slider_width // 6, screen_hei
 slider_laser_angle = Slider(0.5, screen_width // 6 - slider_width // 6, screen_height // (100/95) - slider_height // (100/95), 0.01, 0.99, 5, None, math.pi)
 all_sliders = slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle
 
-
 reset_button = Button("Reset Sliders", screen_width // 1.25 - 150 // 1.25, screen_height // (100/94) - 50 // (100/94), 150, 50, 28)
-preset1_button = Button("Air to Glass", screen_width // 1.05 - 75 // 1.05, screen_height // (100/94) - 50 // (100/94), 75, 50, 12)
+preset1_button = Button("Air to Glass", screen_width // 1.1 - 75 // 1.1, screen_height // (100/94) - 50 // (100/94), 150, 50, 28)
 
 
 
 
-def Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_x, slider_laser_angle):
+def Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle): #function that creates the different sliders with the functions created before
     slider_RI1.calculation_value(1)
     slider_RI1.render_header(str(slider_RI1.real_value))
     slider_RI1.draw_slider()
-    slider_RI1.blit_header(4.45, 10)
+    slider_RI1.blit_text('    Refraction Index 1')
 
     slider_RI2.calculation_value(1)
     slider_RI2.render_header(str(slider_RI2.real_value))
     slider_RI2.draw_slider()
-    slider_RI2.blit_header(1.3, 10)
+    slider_RI2.blit_text('    Refraction Index 2')
 
     slider_square_x.calculation_value(0)
     slider_square_x.render_header(str(slider_square_x.real_value))
     slider_square_x.draw_slider()
-    slider_square_x.blit_header(2, 1.11)
+    slider_square_x.blit_text(' Square position axis x')
 
     slider_square_y.calculation_value(0)
     slider_square_y.render_header(str(slider_square_y.real_value))
     slider_square_y.draw_slider()
-    slider_square_y.blit_header(2, 1.05)
+    slider_square_y.blit_text(' Square position axis y', 25)
 
-    slider_laser_x.calculation_value(0)
-    slider_laser_x.render_header(str(slider_laser_x.real_value))
-    slider_laser_x.draw_slider()
-    slider_laser_x.blit_header(4.45, 1.11)
+    slider_laser_pos.calculation_value(0)
+    slider_laser_pos.render_header(str(slider_laser_pos.real_value))
+    slider_laser_pos.draw_slider()
+    slider_laser_pos.blit_text('  Laser position axis y')
 
     slider_laser_angle.calculation_value(-math.pi/2)
     slider_laser_angle.render_header(str(round(math.degrees(slider_laser_angle.real_value), 0)))
     slider_laser_angle.draw_slider()
-    slider_laser_angle.blit_header(4.45, 1.05)
+    slider_laser_angle.blit_text('          Laser angle', 25)
 
-def colors(slider = 1):
+
+def colors(slider = 1): #function that creates the different colors depending on the refraction index
     if slider is None or slider < 1:
         color = (0, 0, 0)
     else:
         color = ((slider-1)*30, (slider-1)*30, (slider-1)*30)
     return color
 
-def Square_function():
+def Square_function(): #function that creates the square and the laser and makes them move
     x = 25
     y = slider_laser_pos.real_value
 
@@ -317,9 +331,11 @@ def Square_function():
         if not reflexion:
             pygame.draw.line(screen, laser_color, (x, y), (x + 1, y), laser_thickness) #prints the laser
 
+
+#main loop
 done = False
 while not done:
-    for event in pygame.event.get():
+    for event in pygame.event.get(): #this loop is used to check if the mouse is clicked, if the sliders are clicked, if the reset button is clicked and if the preset button is clicked
         if event.type == pygame.QUIT:
             done = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -350,11 +366,14 @@ while not done:
             for slider in all_sliders:
                 slider.update_motion(event, mouse_x)
 
-    screen.fill(colors(slider_RI1.real_value))
-    Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle)
-    for slider in all_sliders:
-        slider.blit_header(1, 1)  # Adjust the alignment as needed
+    screen.fill(colors(slider_RI1.real_value)) #this fills the screen with the color of the refraction index
 
+    Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, slider_laser_pos, slider_laser_angle) #this prints the sliders
+    
+    for slider in all_sliders:
+        slider.blit_header(1, 1)  # Adjust the values as the sliders move
+
+    #this calls the functions
     Square_function()
     reset_button.draw()
     preset1_button.draw()
@@ -362,25 +381,3 @@ while not done:
     pygame.time.Clock().tick(60)
     
 pygame.quit()
-
-# TO ADD : 
-
-# the transparent square
-# add headers
-# In case of a reflexion !
-
-
-# DONE :
-
-# a button to set IR to water, glass etc.
-# optimization
-# the laser movement
-# A window with the output angle
-# # add comas
-# go from tkiner to pygame
-# show RI and Angle on screen
-# A slider to choose angle and RI
-# remove the prompt to ask for angles
-# fix crash !
-# # a reset button
-
