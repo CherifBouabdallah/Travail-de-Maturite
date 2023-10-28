@@ -186,6 +186,9 @@ def Square_function():
             
             angle_of_refraction_in = math.asin(pre_calculation_in) #ends the refraction calculus only if there's no reflexion
             
+            x_increment_in = round(math.cos(angle_of_refraction_in), 5) 
+            y_increment_in = round(math.sin(angle_of_refraction_in), 5)
+
             if round(y, 0) == slider_square_y.real_value - 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and not down_face_touched and not up_face_touched: #checks if up face is touched and adapts the angle
 
                 x_increment_in = round(math.sin(angle_of_refraction_in), 5)
@@ -206,9 +209,7 @@ def Square_function():
                 x_increment_in = -round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = -round(math.cos(angle_of_refraction_in), 5)
 
-            else: #finds the increments to render an angle if everything is normal
-                x_increment_in = round(math.cos(angle_of_refraction_in), 5) 
-                y_increment_in = round(math.sin(angle_of_refraction_in), 5)
+
 
 
         pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value) #starts the refraction calculus from in to out
@@ -246,8 +247,6 @@ def Square_function():
                 print('down face touched')
 
                 
-
-            
 
         if slider_RI1.real_value != slider_RI2.real_value and slider_laser_angle.real_value != 0: #checks if there is a refraction
             refraction = True
