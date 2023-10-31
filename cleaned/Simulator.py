@@ -1,10 +1,10 @@
 import pygame
 import math
 
-#Definition of the window + initialization of pygame
+#initialization of pygame
 pygame.init()
 caption = "Refraction Simulator"
-screen_width, screen_height = 1400, 980
+screen_width, screen_height = 1400, 980 #Definition of the window size
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption(caption)
 
@@ -12,7 +12,6 @@ pygame.display.set_caption(caption)
 black = (0, 0, 0)
 white = (255, 255, 255)
 gray = (60, 60, 60)
-
 Bigfont = pygame.font.SysFont("Calibri", 72)
 font = pygame.font.SysFont("Calibri", 52)
 Smallfont = pygame.font.SysFont("Calibri", 22)
@@ -83,9 +82,6 @@ class Slider:
         self.text = Smallfont.render(text, True, white)
         screen.blit(self.text, (self.pos_x, self.pos_y + offset))
 
-
-
-
 #creation of the buttons by defining a class
 class Button:
     def __init__(self, text, pos_x, pos_y, width, height, font_size): #definition of the buttons attributes
@@ -108,7 +104,7 @@ class Button:
         screen.blit(text_surface, text_rect)
 
 
-#creation of the sliders and buttons
+#creation of the sliders and buttons by using the classes created before
 
 slider_RI1 = Slider(0, screen_width // 6 - slider_width // 6, screen_height // 10 - slider_height // 10, 0, 1, 5, None, 1)
 slider_RI2 = Slider(0, screen_width // (1.2) - slider_width // (1.2), screen_height // 10 - slider_height // 10, 0, 1, 5, None, 1)
@@ -154,7 +150,6 @@ def Slider_printer(slider_RI1, slider_RI2, slider_square_x, slider_square_y, sli
     slider_laser_angle.render_header(str(round(math.degrees(slider_laser_angle.real_value), 0)))
     slider_laser_angle.draw_slider()
     slider_laser_angle.blit_text('          Laser angle', 25)
-
 
 def colors(slider = 1): #function that creates the different colors depending on the refraction index
     if slider is None or slider < 1:
@@ -338,19 +333,19 @@ while not done:
     for event in pygame.event.get(): #this loop is used to check if the mouse is clicked, if the sliders are clicked, if the reset button is clicked and if the preset button is clicked
         if event.type == pygame.QUIT:
             done = True
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN: 
             if event.button == 1:
                 mouse_x, mouse_y = event.pos
                 for slider in all_sliders:
-                    slider.update_grabbed(event, mouse_x, mouse_y)
+                    slider.update_grabbed(event, mouse_x, mouse_y) #this loop is used to check if the sliders are clicked
 
-                if reset_button.is_clicked((mouse_x, mouse_y)):    
+                if reset_button.is_clicked((mouse_x, mouse_y)): #this loop is used to check if the reset button is clicked
                     for slider in all_sliders:
                         slider.value = 0.5
                     slider_RI2.value = 0
                     slider_RI1.value = 0
 
-                if preset1_button.is_clicked((mouse_x, mouse_y)):    
+                if preset1_button.is_clicked((mouse_x, mouse_y)): #this loop is used to check if the preset button is clicked
                     for slider in all_sliders:
                         slider.value = 0.5
                     slider_RI2.value = 0.51
@@ -358,11 +353,11 @@ while not done:
                     slider_laser_angle.value = 0.66
                     slider_laser_pos.value = 0.1
 
-        elif event.type == pygame.MOUSEBUTTONUP:
+        elif event.type == pygame.MOUSEBUTTONUP: #this loop is used to check if the mouse is released 
             for slider in all_sliders:
                 slider.update_released(event)
 
-        elif event.type == pygame.MOUSEMOTION:
+        elif event.type == pygame.MOUSEMOTION: #this loop is used to check if the mouse is moving
             for slider in all_sliders:
                 slider.update_motion(event, mouse_x)
 
@@ -373,7 +368,7 @@ while not done:
     for slider in all_sliders:
         slider.blit_header(1, 1)  # Adjust the values as the sliders move
 
-    #this calls the functions
+    #this calls the functions created before
     Square_function()
     reset_button.draw()
     preset1_button.draw()
