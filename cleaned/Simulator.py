@@ -159,26 +159,27 @@ def colors(slider = 1): #function that creates the different colors depending on
     return color
 
 def Square_function(): #function that creates the square and the laser and makes them move
+    #definition of the variables of the square and the laser
     x = 25
     y = slider_laser_pos.real_value
-
     laser_color = 'red'
     laser_thickness = 5
     square_color = white
     refraction = None
     reflexion = None
-
+    #definition of the state of the square and the laser
     square_entered = False
     square_exited =  False
-
     up_face_touched = False
     down_face_touched = False
     up_face_touched_out = False
     down_face_touched_out = False
 
+    #creation of the square 
     pygame.draw.rect(screen, square_color, [slider_square_x.real_value - 75, slider_square_y.real_value - 75, 150, 150])
     pygame.draw.rect(screen, colors(slider_RI2.real_value), [slider_square_x.real_value - 70, slider_square_y.real_value - 70, 140, 140])
 
+    #definition of the increments that will allow us to manipulate the angle of the laser
     x_increment_in = 0
     y_increment_in = 0
     x_increment_out = 0
@@ -186,24 +187,20 @@ def Square_function(): #function that creates the square and the laser and makes
     angle_of_refraction_in = 0
     angle_of_refraction_out = 0
 
+    #calculation of 2 of these increments
     x_laser_increment = round(math.cos(slider_laser_angle.real_value), 5)
     y_laser_increment = round(math.sin(slider_laser_angle.real_value), 5)
 
-    while(x < screen_width):
-
-
+    while(x < screen_width): #this loop is used to make the laser move according to the angle of the laser and the refraction index
+        
         pre_calculation_in = (slider_RI1.real_value * math.sin(slider_laser_angle.real_value) / slider_RI2.real_value) #starts the refraction calculus from out to in
-
-
-        if -1 <= pre_calculation_in <= 1:
+        if -1 <= pre_calculation_in <= 1: #if the refraction index is too high, the laser will not refract this is why there is this condition
             reflexion = False
             angle_of_refraction_in = math.asin(pre_calculation_in) #ends the refraction calculus only if there's no reflexion
-            
             x_increment_in = round(math.cos(angle_of_refraction_in), 5) 
             y_increment_in = round(math.sin(angle_of_refraction_in), 5)
 
-            if round(y, 0) == slider_square_y.real_value - 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and not down_face_touched and not up_face_touched: #checks if up face is touched and adapts the angle
-
+            if slider_square_y.real_value - 74.5 >= round(y, 0) >= slider_square_y.real_value - 75.5 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and not down_face_touched and not up_face_touched: #checks if up face is touched and adapts the angle
                 x_increment_in = round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = round(math.cos(angle_of_refraction_in), 5)
                 up_face_touched = True
@@ -213,7 +210,7 @@ def Square_function(): #function that creates the square and the laser and makes
                 y_increment_in = round(math.cos(angle_of_refraction_in), 5)
 
         
-            if round(y, 0) == slider_square_y.real_value + 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and not up_face_touched and not down_face_touched: #checks if down face if touched and adapts the angle
+            if slider_square_y.real_value + 74.5 <= round(y, 0) <= slider_square_y.real_value + 75.5 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and not up_face_touched and not down_face_touched: #checks if down face if touched and adapts the angle
                 x_increment_in = -round(math.sin(angle_of_refraction_in), 5)
                 y_increment_in = -round(math.cos(angle_of_refraction_in), 5)
                 down_face_touched = True
@@ -258,7 +255,7 @@ def Square_function(): #function that creates the square and the laser and makes
             x_increment_out = round(math.cos(angle_of_refraction_out), 5) #finds the increments to render an angle if everything is normal
             y_increment_out = round(math.sin(angle_of_refraction_out), 5) #finds the increments to render an angle if everything is normal
 
-            if round(y, 0) == slider_square_y.real_value - 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and square_entered and not reflexion: #checks if up face is touched and adapts the angle
+            if slider_square_y.real_value - 74.5 >= round(y, 0) >= slider_square_y.real_value - 75.5 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and square_entered and not reflexion: #checks if up face is touched and adapts the angle
 
                 x_increment_out = -round(math.sin(angle_of_refraction_out), 5)
                 y_increment_out = round(math.cos(angle_of_refraction_out), 5)
@@ -270,7 +267,7 @@ def Square_function(): #function that creates the square and the laser and makes
                 y_increment_out = round(math.cos(angle_of_refraction_out), 5)
 
 
-            if round(y, 0) == slider_square_y.real_value + 75 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and square_entered and not reflexion: #checks if down face if touched and adapts the angle
+            if slider_square_y.real_value + 74.5 <= round(y, 0) <= slider_square_y.real_value + 75.5 and slider_square_x.real_value - 75 <= x <= slider_square_x.real_value + 75 and refraction and square_entered and not reflexion: #checks if down face if touched and adapts the angle
 
                 x_increment_out = round(math.sin(angle_of_refraction_out), 5)
                 y_increment_out = -round(math.cos(angle_of_refraction_out), 5)
