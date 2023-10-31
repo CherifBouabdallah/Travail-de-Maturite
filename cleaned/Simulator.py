@@ -247,8 +247,6 @@ def Square_function(): #function that creates the square and the laser and makes
 
             pygame.draw.line(screen, 'red', (slider_square_x.real_value-75, slider_square_y.real_value), (25, distance_reflexion), 5) #prints the reflexion of the laser
 
-
-
         pre_calculation_out = (slider_RI2.real_value * math.sin(angle_of_refraction_in) / slider_RI1.real_value) #starts the refraction calculus from in to out
 
         if -1 <= pre_calculation_out <= 1:
