@@ -370,4 +370,4 @@ while not done:
     pygame.display.update()
     pygame.time.Clock().tick(60)
     
-pygame.quit()
+pygame.quit() #ends the sim
