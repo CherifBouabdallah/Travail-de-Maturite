@@ -22,7 +22,6 @@ slider_width = 200
 slider_height = 20
 mouse_x = 0
 mouse_y = 0
-angle_of_refraction_in_header = 0
 
 
 # creation of the sliders by defining a class
